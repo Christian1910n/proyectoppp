@@ -83,7 +83,7 @@ class _CarruselState extends State<Carrusel> {
               return Image.network(imageUrl, fit: BoxFit.cover);
             },
             options: CarouselOptions(
-              height: 350,
+              height: 260,
               autoPlay: true,
               enlargeCenterPage: true,
               aspectRatio: 16 / 9,
@@ -96,42 +96,38 @@ class _CarruselState extends State<Carrusel> {
           const SizedBox(height: 30),
           ElevatedButton(
             style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.all(16.0),
-                textStyle: const TextStyle(fontSize: 15, fontFamily: 'papyrus'),
-                backgroundColor: const Color.fromARGB(255, 0, 84, 153)),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.all(12.0),
+              textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
+              backgroundColor: const Color.fromARGB(255, 0, 84, 153),
+            ),
             onPressed: () {},
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.accessibility, size: 20),
-                SizedBox(width: 10),
-                Text(
-                  'REGISTRARSE',
-                ),
+                Icon(Icons.accessibility, size: 18),
+                const SizedBox(width: 5),
+                Text('REGISTRARSE'),
               ],
             ),
           ),
-          const SizedBox(height: 30),
-          TextButton(
-              style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  textStyle:
-                      const TextStyle(fontSize: 18, fontFamily: 'papyrus'),
-                  backgroundColor: const Color.fromARGB(255, 0, 84, 153)),
-              onPressed: () {
-                abrirlogin();
-              },
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.login, size: 20),
-                  SizedBox(width: 10),
-                  Text(
-                    'Iniciar Sesión',
-                  ),
-                ],
-              ))
+          SizedBox(height: 10),
+          ElevatedButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
+              backgroundColor: const Color.fromARGB(255, 0, 84, 153),
+            ),
+            onPressed: abrirlogin,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.login, size: 15),
+                const SizedBox(width: 5),
+                Text('Iniciar Sesión'),
+              ],
+            ),
+          ),
         ],
       ),
     );
