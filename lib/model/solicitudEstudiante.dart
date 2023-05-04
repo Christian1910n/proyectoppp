@@ -1,19 +1,17 @@
 import 'package:proyectoppp/model/estudiante.dart';
 import 'package:proyectoppp/model/convocatoria.dart';
 
- class SolicitudEstudiante {
+class SolicitudEstudiante {
+  final int id;
+  final bool estado;
+  final DateTime fechaEnvio;
+  final Estudiante estudiante;
+  final Convocatoria convocatoria;
 
-  int id;
-  bool estado;
-  late DateTime fechaEnvio;
-  Estudiante estudiante;
-  Convocatoria convocatoria;
-
-  SolicitudEstudiante({
-    required this.id,
-    required this.estado,
-    required this.estudiante,
-    required this.convocatoria
-  });
-
+  SolicitudEstudiante(
+      {required this.id,
+      required this.estado,
+      required this.fechaEnvio,
+      required this.estudiante,
+      required this.convocatoria});
 }

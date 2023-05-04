@@ -2,10 +2,10 @@ import 'package:proyectoppp/model/convocatoria.dart';
 import 'package:proyectoppp/model/accion.dart';
 
 class AccionConvoca {
-  int id;
-  bool respuesta;
-  Accion accion;
-  Convocatoria convocatoria;
+  final int id;
+  final bool respuesta;
+  final Accion accion;
+  final Convocatoria convocatoria;
 
   AccionConvoca({
     required this.id,
