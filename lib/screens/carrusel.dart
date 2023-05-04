@@ -72,7 +72,7 @@ class _CarruselState extends State<Carrusel> {
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'papyrus',
-                fontSize: 40,
+                fontSize: 35,
               ),
             ),
           ),
@@ -83,7 +83,7 @@ class _CarruselState extends State<Carrusel> {
               return Image.network(imageUrl, fit: BoxFit.cover);
             },
             options: CarouselOptions(
-              height: 400,
+              height: 350,
               autoPlay: true,
               enlargeCenterPage: true,
               aspectRatio: 16 / 9,
