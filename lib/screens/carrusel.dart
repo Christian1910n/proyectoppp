@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:proyectoppp/screens/home_google_sign_in.dart';
+import 'package:proyectoppp/screens/registroestudiantescreen.dart';
 
 class Carrusel extends StatefulWidget {
   const Carrusel({super.key});
@@ -26,6 +27,13 @@ class _CarruselState extends State<Carrusel> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => HomeGoogleSignIn()),
+    );
+  }
+
+  void abrirRegistroEstudiantes(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Registroestudiantes()),
     );
   }
 
@@ -101,17 +109,17 @@ class _CarruselState extends State<Carrusel> {
               textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
               backgroundColor: const Color.fromARGB(255, 0, 84, 153),
             ),
-            onPressed: () {},
-            child: Row(
+            onPressed: () => abrirRegistroEstudiantes(context),
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.accessibility, size: 18),
-                const SizedBox(width: 5),
+                SizedBox(width: 5),
                 Text('REGISTRARSE'),
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
@@ -119,11 +127,11 @@ class _CarruselState extends State<Carrusel> {
               backgroundColor: const Color.fromARGB(255, 0, 84, 153),
             ),
             onPressed: abrirlogin,
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.login, size: 15),
-                const SizedBox(width: 5),
+                SizedBox(width: 5),
                 Text('Iniciar Sesión'),
               ],
             ),

@@ -13,8 +13,10 @@ class SolicitudEmpresa {
       {required this.id,
       required this.numPracticantes,
       required this.numHoras,
-      required this.fechaInicioTen,
-      required this.fechaMaxTen,
+      required String fechaInicioTen,
+      required String fechaMaxTen,
       required this.estado,
-      required this.convenio});
+      required this.convenio})
+      : fechaInicioTen = DateTime.parse(fechaInicioTen),
+        fechaMaxTen = DateTime.parse(fechaMaxTen);
 }

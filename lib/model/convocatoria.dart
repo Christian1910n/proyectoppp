@@ -2,8 +2,8 @@ import 'package:proyectoppp/model/solicitudempresa .dart';
 
 class Convocatoria {
   final int id;
-  final DateTime fechaInicio;
-  final DateTime fechaFin;
+  final String fechaInicio;
+  final String fechaFin;
   final int numero;
   final SolicitudEmpresa solicitudEmpresa;
 

@@ -19,4 +19,18 @@ class Usuario {
       required this.titulo,
       required this.telefono,
       required this.activo});
+
+  factory Usuario.fromJson(Map<String, dynamic> json) {
+    return Usuario(
+      id: json['id'],
+      rol: json['rol'],
+      cedula: (json['cedula']),
+      nombre: (json['nombre']),
+      apellido: (json['apellido']),
+      correo: (json['correo']),
+      titulo: (json['titulo']),
+      telefono: (json['telefono']),
+      activo: (json['activo']),
+    );
+  }
 }

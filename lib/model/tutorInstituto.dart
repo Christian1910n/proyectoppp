@@ -11,4 +11,12 @@ class TutorInstituto {
       required this.idDocente,
       required this.rol,
       required this.usuario});
+
+  factory TutorInstituto.fromJson(Map<String, dynamic> json) {
+    return TutorInstituto(
+        id: json['id'],
+        idDocente: json['idDocente'],
+        rol: (json['rol']),
+        usuario: Usuario.fromJson(json['usuario']));
+  }
 }
