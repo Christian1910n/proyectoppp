@@ -24,7 +24,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.68.110:8080/api/usuarios/login'),
+        Uri.parse('${enlace}/api/usuarios/login'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -82,7 +82,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 4, 13, 17),
+      backgroundColor: const Color.fromARGB(255, 4, 13, 17),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 90.0),
         children: <Widget>[

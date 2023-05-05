@@ -9,6 +9,8 @@ import 'package:proyectoppp/model/empresa.dart';
 import 'package:proyectoppp/model/solicitudempresa .dart';
 import 'package:proyectoppp/model/tutorInstituto.dart';
 
+import '../utils/url.dart';
+
 class listaConvocatoria extends StatefulWidget {
   @override
   _listaConvocatoriaState createState() => _listaConvocatoriaState();
@@ -21,7 +23,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
   void initState() {
     super.initState();
 
-    final url = Uri.parse('http://localhost:8080/convocatoria/listar');
+    final url = Uri.parse('${enlace}convocatoria/listar');
     http.get(url).then((response) {
       final responseData = json.decode(response.body);
       final List<Convocatoria> loadedConvocatorias = [];
