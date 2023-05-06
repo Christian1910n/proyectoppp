@@ -1,13 +1,13 @@
 class Usuario {
-  final int id;
-  final int rol;
-  final String cedula;
-  final String nombre;
-  final String apellido;
-  final String correo;
-  final String titulo;
-  final String telefono;
-  final bool activo;
+  int id;
+  int rol;
+  String cedula;
+  String nombre;
+  String apellido;
+  String correo;
+  String titulo;
+  String telefono;
+  bool activo;
 
   Usuario(
       {required this.id,

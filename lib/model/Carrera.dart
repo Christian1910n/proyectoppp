@@ -1,8 +1,8 @@
 class Carrera {
-  final int id;
-  final int idCarrera;
-  final String nombre;
-  final bool activo;
+  int id;
+  int idCarrera;
+  String nombre;
+  bool activo;
 
   Carrera(
       {required this.id,

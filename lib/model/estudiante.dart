@@ -2,14 +2,14 @@ import 'package:proyectoppp/model/Carrera.dart';
 import 'package:proyectoppp/model/Usuario.dart';
 
 class Estudiante {
-  final int id;
-  final String periodo;
-  final String ciclo;
-  final int horasCumplidas;
-  final bool prioridad;
-  final int idEstudiante;
-  final Usuario usuario;
-  final Carrera carrera;
+  int id;
+  String periodo;
+  String ciclo;
+  int horasCumplidas;
+  bool prioridad;
+  int idEstudiante;
+  Usuario usuario;
+  Carrera carrera;
 
   Estudiante(
       {required this.id,
