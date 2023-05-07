@@ -11,12 +11,12 @@ import 'package:proyectoppp/model/tutorInstituto.dart';
 
 import '../utils/url.dart';
 
-class listaConvocatoria extends StatefulWidget {
+class listaEstudiantesPostulados extends StatefulWidget {
   @override
-  _listaConvocatoriaState createState() => _listaConvocatoriaState();
+  _listaEstudiantesPostuladosState createState() => _listaEstudiantesPostuladosState();
 }
 
-class _listaConvocatoriaState extends State<listaConvocatoria> {
+class _listaEstudiantesPostuladosState extends State<listaEstudiantesPostulados> {
   List<Convocatoria> convocatorias = [];
 
   @override
@@ -140,7 +140,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
         child: Column(
           children: [
             SizedBox(height: 10),
-            Text('Lista de convocatorias',
+            Text('Estudiantes Postulados',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             ListView.separated(
@@ -189,17 +189,6 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Acción al hacer clic en "Ver más"
-                        },
-                        child: Text(
-                          'Ver más',
-                          style: TextStyle(
-                            color: Colors.blue,
-                          ),
                         ),
                       ),
                     ],
