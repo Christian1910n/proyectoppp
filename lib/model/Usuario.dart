@@ -33,4 +33,16 @@ class Usuario {
       activo: (json['activo']),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'rol': rol,
+        'cedula': cedula,
+        'nombre': nombre,
+        'apellido': apellido,
+        'correo': correo,
+        'titulo': titulo,
+        'telefono': telefono,
+        'activo': activo
+      };
 }

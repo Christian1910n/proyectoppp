@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class UsuarioFenix {
   final int alumno_docenteId;
   final String cedula;
@@ -26,17 +28,21 @@ class UsuarioFenix {
 
   factory UsuarioFenix.fromJson(Map<String, dynamic> json) {
     return UsuarioFenix(
-      alumno_docenteId: json['alumno_docenteId'],
-      cedula: json['cedula'],
-      apellidos: (json['apellidos']),
-      nombres: (json['nombres']),
-      carreraId: (json['carreraId']),
-      ciclo: (json['ciclo']),
-      correo: (json['correo']),
-      telefono: (json['telefono']),
-      tipo: (json['tipo']),
-      titulo: (json['titulo']),
-      periodo: (json['periodo']),
+      alumno_docenteId: json['alumno_docenteId'] ?? 0,
+      cedula: json['cedula'] ?? '',
+      apellidos: utf8
+          .decode(json['apellidos'].toString().codeUnits)
+          .replaceAll('?', 'ñ'),
+      nombres: utf8
+          .decode(json['nombres'].toString().codeUnits)
+          .replaceAll('?', 'ñ'),
+      carreraId: json['carreraId'] ?? 0,
+      ciclo: json['ciclo'] ?? 0,
+      correo: json['correo'] ?? '',
+      telefono: json['telefono'] ?? '',
+      tipo: json['tipo'] ?? 0,
+      titulo: json['titulo'] ?? '',
+      periodo: json['periodo'] ?? '',
     );
   }
 }

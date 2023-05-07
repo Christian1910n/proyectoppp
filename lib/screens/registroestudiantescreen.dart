@@ -6,7 +6,9 @@ import 'package:proyectoppp/model/Carrera.dart';
 import 'package:proyectoppp/model/Usuario.dart';
 import 'package:proyectoppp/model/estudiante.dart';
 import 'package:proyectoppp/model/usuariofenix.dart';
+import 'package:proyectoppp/screens/carrusel.dart';
 import '../utils/url.dart';
+import 'package:lottie/lottie.dart';
 
 class Registroestudiantes extends StatefulWidget {
   const Registroestudiantes({super.key});
@@ -29,7 +31,10 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
   final TextEditingController _ccedula = TextEditingController();
   bool _loading = false;
   bool _showPassword = false;
+  bool _habilitar = true;
   String? carreras;
+  String? contra = '';
+  String? rcontra = '';
 
   @override
   void initState() {
@@ -88,22 +93,28 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
           _estudiante.usuario.telefono = _usuarioFenix.telefono;
           _estudiante.ciclo = _usuarioFenix.ciclo.toString();
           _estudiante.periodo = _usuarioFenix.periodo;
+          _habilitar = false;
         });
       } catch (error) {
         print('Error: $error');
-        setState(() {
-          _cnombres.text = '';
-          _capellidos.text = '';
-          _cciclo.text = '';
-          _ccorreo.text = '';
-          _ctelefono.text = '';
-          _cperiodo.text = '';
-          _ccedula.text = value;
-        });
+        if (mounted) {
+          setState(() {
+            _cnombres.text = '';
+            _capellidos.text = '';
+            _cciclo.text = '';
+            _ccorreo.text = '';
+            _ctelefono.text = '';
+            _cperiodo.text = '';
+            _ccedula.text = value;
+            _habilitar = true;
+          });
+        }
       } finally {
-        setState(() {
-          _loading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _loading = false;
+          });
+        }
       }
     } else {
       setState(() {
@@ -113,27 +124,70 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
         _ccorreo.text = '';
         _ctelefono.text = '';
         _cperiodo.text = '';
+        _habilitar = true;
       });
     }
   }
 
-  void registrarestudiante() {
-    print('${_estudiante.usuario.cedula} cedula');
-    print('${_estudiante.usuario.nombre} nombres');
-    print('${_estudiante.usuario.apellido} apellidos');
-    print('${_estudiante.usuario.telefono} telefono');
-    print('${_estudiante.usuario.correo} correo');
-    print('${_estudiante.ciclo} ciclo');
-    print('${_estudiante.periodo} periodo');
+  Future<void> registrarestudiante() async {
+    if (contra == rcontra) {
+      if (_estudiante.usuario.cedula != '' &&
+          _estudiante.usuario.nombre != '' &&
+          _estudiante.usuario.apellido != '' &&
+          _estudiante.usuario.telefono != '' &&
+          _estudiante.usuario.correo != '' &&
+          _estudiante.ciclo != '' &&
+          _estudiante.periodo != '' &&
+          contra != '') {
+        /*
+        try {
+          final response = await http.post(
+            Uri.parse('${enlace}estudiante/crear'),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(_estudiante.toJson()),
+          );
+          if (response.statusCode == 200) {
+            final responseBody = jsonDecode(response.body);
+
+            // ignore: use_build_context_synchronously
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Carrusel()),
+            );
+          }
+        } catch (error) {
+          print(error);
+        } finally {
+          setState(() {
+            _loading = false;
+          });
+        }
+        */
+      } else {
+        dialogoerror('DATOS INCOMPLETOS', context);
+      }
+    } else {
+      dialogoerror('CONTRASEÑAS NO COINCIDEN', context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Center(
+        child: Stack(
+          children: [
+            Lottie.network(
+                'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),
+
+            //child: Lottie.asset('assets/loading.json'),
+          ],
+        ),
       );
     }
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -179,6 +233,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     labelText: 'Nombres',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
+                    enabled: false,
                   ),
                   onChanged: (value) {
                     setState(() {
@@ -195,6 +250,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
+                  enabled: false,
                   onChanged: (value) {
                     setState(() {
                       _estudiante.usuario.apellido = value;
@@ -210,6 +266,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
+                  enabled: false,
                   onChanged: (value) {
                     setState(() {
                       _estudiante.usuario.correo = value;
@@ -225,6 +282,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
+                  enabled: !_habilitar,
                   onChanged: (value) {
                     setState(() {
                       _estudiante.usuario.telefono = value;
@@ -240,6 +298,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
+                  enabled: !_habilitar,
                   onChanged: (value) {
                     setState(() {
                       _estudiante.ciclo = value;
@@ -255,6 +314,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
+                  enabled: !_habilitar,
                   onChanged: (value) {
                     setState(() {
                       _estudiante.periodo = value;
@@ -293,6 +353,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                 TextField(
                   enableInteractiveSelection: false,
                   obscureText: !_showPassword,
+                  enabled: !_habilitar,
                   decoration: InputDecoration(
                       labelText: 'Contraseña',
                       suffixIcon: IconButton(
@@ -309,13 +370,16 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                           borderRadius: BorderRadius.circular(0.0))),
                   style: const TextStyle(color: Colors.white),
                   onChanged: (valor) {
-                    setState(() {});
+                    setState(() {
+                      contra = valor;
+                    });
                   },
                 ),
                 const SizedBox(height: 20),
                 TextField(
                   enableInteractiveSelection: false,
                   obscureText: !_showPassword,
+                  enabled: !_habilitar,
                   decoration: InputDecoration(
                       labelText: 'Repetir Contraseña',
                       suffixIcon: IconButton(
@@ -332,7 +396,9 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                           borderRadius: BorderRadius.circular(0.0))),
                   style: const TextStyle(color: Colors.white),
                   onChanged: (valor) {
-                    setState(() {});
+                    setState(() {
+                      rcontra = valor;
+                    });
                   },
                 ),
                 ElevatedButton(
