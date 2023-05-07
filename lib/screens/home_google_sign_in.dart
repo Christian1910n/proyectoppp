@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyectoppp/screens/carrusel.dart';
 import 'package:proyectoppp/model/logindata.dart';
+import 'package:lottie/lottie.dart';
+
+import '../utils/url.dart';
 
 class HomeGoogleSignIn extends StatefulWidget {
   @override
@@ -17,14 +20,14 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   bool _loading = false;
 
   Future<void> login() async {
-    /*
     setState(() {
       _loading = true;
     });
 
+    /*
     try {
       final response = await http.post(
-        Uri.parse('${enlace}/api/usuarios/login'),
+        Uri.parse('${enlace}api/usuarios/login'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -40,24 +43,10 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
           MaterialPageRoute(builder: (context) => const Carrusel()),
         );
       } else {
+        print('${_loginData.usuario}h');
+        print('${_loginData.contra}h');
         // ignore: use_build_context_synchronously
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('!!!ERROR!!!'),
-              content: const Text('Usuario o contraseña incorrecta.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cerrar'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        dialogoerror('USUARIO O CONTRASEÑA INCORRECTA', context);
       }
     } catch (error) {
       print(error);
@@ -67,10 +56,6 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
       });
     }
     */
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Carrusel()),
-    );
   }
 
   @override
@@ -81,6 +66,13 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return Center(
+        child: Lottie.network(
+            'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),
+      );
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 4, 13, 17),
       body: ListView(
@@ -181,10 +173,6 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
               ),
             ],
           ),
-          if (_loading)
-            const Center(
-              child: CircularProgressIndicator(),
-            )
         ],
       ),
     );
