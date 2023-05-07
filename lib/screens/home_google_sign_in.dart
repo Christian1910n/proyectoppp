@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:proyectoppp/screens/carrusel.dart';
 import 'package:proyectoppp/model/logindata.dart';
 import 'package:lottie/lottie.dart';
+import 'package:proyectoppp/screens/menudrawer.dart/menuestudiante.dart';
 
 import '../utils/url.dart';
 
@@ -56,6 +57,11 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
       });
     }
     */
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MenuEstudiante()),
+    );
   }
 
   @override

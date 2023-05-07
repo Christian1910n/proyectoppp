@@ -266,7 +266,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
-                  enabled: !_habilitar,
+                  enabled: false,
                   onChanged: (value) {
                     setState(() {
                       _estudiante.usuario.correo = value;
