@@ -8,6 +8,7 @@ import 'package:proyectoppp/model/convocatoria.dart';
 import 'package:proyectoppp/model/empresa.dart';
 import 'package:proyectoppp/model/solicitudempresa .dart';
 import 'package:proyectoppp/model/tutorInstituto.dart';
+import 'package:proyectoppp/screens/detalleConvocatoria.dart';
 
 import '../utils/url.dart';
 
@@ -149,7 +150,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
               itemCount: convocatorias.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  title: Text(
+                  title: Text("CONVOCATORIA PRACTICAS PRE PROFESIONALES - "+
                     convocatorias[index]
                         .solicitudEmpresa
                         .convenio
@@ -169,7 +170,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                           style: DefaultTextStyle.of(context).style,
                           children: <TextSpan>[
                             TextSpan(
-                              text: convocatorias[index].fechaFin.toString(),
+                              text: convocatorias[index].fechaInicio.toString(),
                               style: TextStyle(
                                 color: Color.fromARGB(255, 7, 178, 67),
                               ),
@@ -183,7 +184,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                           style: DefaultTextStyle.of(context).style,
                           children: <TextSpan>[
                             TextSpan(
-                              text: convocatorias[index].fechaInicio.toString(),
+                              text: convocatorias[index].fechaFin.toString(),
                               style: TextStyle(
                                 color: Colors.orange,
                               ),
@@ -191,21 +192,16 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                           ],
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          // Acción al hacer clic en "Ver más"
-                        },
-                        child: Text(
-                          'Ver más',
-                          style: TextStyle(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                   onTap: () {
-                    // Acción al hacer tap en el elemento
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DetallesConvocatoria(convocatorias[index]),
+                      ),
+                    );
                   },
                 );
               },
