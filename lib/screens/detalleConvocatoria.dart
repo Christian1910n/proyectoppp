@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyectoppp/model/convocatoria.dart';
-
+import 'package:proyectoppp/screens/pdg_page.dart';
 
 class DetallesConvocatoria extends StatelessWidget {
   final Convocatoria convocatoria;
@@ -54,7 +54,10 @@ class DetallesConvocatoria extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PdfPage()),
+                  );
                 },
                 child: Text('Postular'),
               ),
