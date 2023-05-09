@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:proyectoppp/screens/carrusel.dart';
 import 'package:proyectoppp/model/logindata.dart';
 import 'package:lottie/lottie.dart';
-import 'package:proyectoppp/screens/menudrawer.dart/menuestudiante.dart';
+import 'package:proyectoppp/screens/listaconvocatorias.dart';
 
 import '../utils/url.dart';
 
@@ -21,11 +21,12 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   bool _loading = false;
 
   Future<void> login() async {
+    /*
     setState(() {
       _loading = true;
     });
 
-    /*
+    
     try {
       final response = await http.post(
         Uri.parse('${enlace}api/usuarios/login'),
@@ -60,7 +61,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MenuEstudiante()),
+      MaterialPageRoute(builder: (context) => listaConvocatoria()),
     );
   }
 

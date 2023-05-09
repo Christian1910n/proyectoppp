@@ -137,6 +137,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
           ),
         ),
       ),
+      drawer: MenuEstudiante(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -150,13 +151,14 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
               itemCount: convocatorias.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  title: Text("CONVOCATORIA PRACTICAS PRE PROFESIONALES - "+
-                    convocatorias[index]
-                        .solicitudEmpresa
-                        .convenio
-                        .empresa
-                        .nombre
-                        .toString(),
+                  title: Text(
+                    "CONVOCATORIA PRACTICAS PRE PROFESIONALES - " +
+                        convocatorias[index]
+                            .solicitudEmpresa
+                            .convenio
+                            .empresa
+                            .nombre
+                            .toString(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

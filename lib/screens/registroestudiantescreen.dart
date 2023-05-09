@@ -51,7 +51,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
         telefono: '',
         activo: true);
 
-    _carrera = Carrera(id: 0, activo: false, idCarrera: 0, nombre: '');
+    _carrera = Carrera(id: 1, activo: false, idCarrera: 0, nombre: '');
     _estudiante = Estudiante(
         id: 0,
         periodo: '',
@@ -93,6 +93,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
           _estudiante.usuario.telefono = _usuarioFenix.telefono;
           _estudiante.ciclo = _usuarioFenix.ciclo.toString();
           _estudiante.periodo = _usuarioFenix.periodo;
+          _estudiante.idEstudiante = _usuarioFenix.alumno_docenteId;
           _habilitar = false;
         });
       } catch (error) {
@@ -139,7 +140,6 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
           _estudiante.ciclo != '' &&
           _estudiante.periodo != '' &&
           contra != '') {
-        /*
         try {
           final response = await http.post(
             Uri.parse('${enlace}estudiante/crear'),
@@ -148,23 +148,18 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
             },
             body: jsonEncode(_estudiante.toJson()),
           );
-          if (response.statusCode == 200) {
-            final responseBody = jsonDecode(response.body);
 
-            // ignore: use_build_context_synchronously
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Carrusel()),
-            );
-          }
+          final responseBody = jsonDecode(response.body);
+          print(responseBody);
         } catch (error) {
           print(error);
         } finally {
-          setState(() {
-            _loading = false;
-          });
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Carrusel()),
+          );
         }
-        */
       } else {
         dialogoerror('DATOS INCOMPLETOS', context);
       }
