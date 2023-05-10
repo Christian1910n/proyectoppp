@@ -7,8 +7,10 @@ import 'package:proyectoppp/model/Usuario.dart';
 import 'package:proyectoppp/model/estudiante.dart';
 import 'package:proyectoppp/model/usuariofenix.dart';
 import 'package:proyectoppp/screens/carrusel.dart';
+import 'package:proyectoppp/screens/home_google_sign_in.dart';
 import '../utils/url.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class Registroestudiantes extends StatefulWidget {
   const Registroestudiantes({super.key});
@@ -29,27 +31,34 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
   final TextEditingController _cciclo = TextEditingController();
   final TextEditingController _cperiodo = TextEditingController();
   final TextEditingController _ccedula = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
+
   bool _loading = false;
   bool _showPassword = false;
   bool _habilitar = true;
-  String? carreras;
   String? contra = '';
   String? rcontra = '';
+  int? idcarre = 0;
+
+  List<Carrera> carreras = [];
+
+  Carrera? carreraSeleccionada;
 
   @override
   void initState() {
+    listarcarreras();
     super.initState();
 
     _usuario = Usuario(
         id: 0,
-        rol: 0,
         cedula: '',
         nombre: '',
         apellido: '',
         correo: '',
         titulo: '',
         telefono: '',
-        activo: true);
+        activo: true,
+        password: '');
 
     _carrera = Carrera(id: 1, activo: false, idCarrera: 0, nombre: '');
     _estudiante = Estudiante(
@@ -71,31 +80,50 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
 
       final encodedValue = Uri.encodeFull(value);
       final url =
-          Uri.parse('${enlace}usuariofenix/buscarusuario/$encodedValue');
+          Uri.parse('${enlace}usuariofenix/buscaralumnocedula/$encodedValue');
       try {
         final response = await http.get(url);
         final responseData = json.decode(response.body);
         final usuarioFenix = UsuarioFenix.fromJson(responseData);
-        setState(() {
-          _usuarioFenix = usuarioFenix;
 
-          _cnombres.text = _usuarioFenix.nombres;
-          _capellidos.text = _usuarioFenix.apellidos;
-          _cciclo.text = '${_usuarioFenix.ciclo}° Ciclo';
-          _ccorreo.text = _usuarioFenix.correo;
-          _ctelefono.text = _usuarioFenix.telefono;
-          _cperiodo.text = _usuarioFenix.periodo;
+        final responseBody = jsonDecode(response.body);
+        if (responseBody.containsKey('Mensaje')) {
+          final mensaje = responseBody['Mensaje'];
+          if (mensaje ==
+              'No se encontro estudiante para la cÃ©dula ${_estudiante.usuario.cedula}') {
+            // ignore: use_build_context_synchronously
+            dialogoerror("ESTUDIANTE NO EXISTE", context);
+          } else if (mensaje == 'Ya existe el alumno') {
+            // ignore: use_build_context_synchronously
+            dialogoerror("USUARIO YA EXISTE", context);
+          } else {}
+        } else {
+          setState(() {
+            _usuarioFenix = usuarioFenix;
 
-          _estudiante.usuario.nombre = _usuarioFenix.nombres;
-          _estudiante.usuario.apellido = _usuarioFenix.apellidos;
-          _estudiante.usuario.correo = _usuarioFenix.correo;
-          _estudiante.usuario.cedula = _usuarioFenix.cedula;
-          _estudiante.usuario.telefono = _usuarioFenix.telefono;
-          _estudiante.ciclo = _usuarioFenix.ciclo.toString();
-          _estudiante.periodo = _usuarioFenix.periodo;
-          _estudiante.idEstudiante = _usuarioFenix.alumno_docenteId;
-          _habilitar = false;
-        });
+            _cnombres.text = _usuarioFenix.nombres;
+            _capellidos.text = _usuarioFenix.apellidos;
+            _cciclo.text = '${_usuarioFenix.ciclo}° Ciclo';
+            _ccorreo.text = _usuarioFenix.correo;
+            _ctelefono.text = _usuarioFenix.telefono;
+            _cperiodo.text = _usuarioFenix.periodo;
+            idcarre = _usuarioFenix.carreraId;
+
+            _estudiante.usuario.nombre = _usuarioFenix.nombres;
+            _estudiante.usuario.apellido = _usuarioFenix.apellidos;
+            _estudiante.usuario.correo = _usuarioFenix.correo;
+            _estudiante.usuario.cedula = _usuarioFenix.cedula;
+            _estudiante.usuario.telefono = _usuarioFenix.telefono;
+            _estudiante.ciclo = _usuarioFenix.ciclo.toString();
+            _estudiante.periodo = _usuarioFenix.periodo;
+            _estudiante.idEstudiante = _usuarioFenix.alumno_docenteId;
+            _habilitar = false;
+            //carreraSeleccionada = carreras.firstWhere(
+            //  (carrera) => carrera.idCarrera == _usuarioFenix.carreraId);
+
+            //_textController.text = carreraSeleccionada!.nombre;
+          });
+        }
       } catch (error) {
         print('Error: $error');
         if (mounted) {
@@ -139,26 +167,41 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
           _estudiante.usuario.correo != '' &&
           _estudiante.ciclo != '' &&
           _estudiante.periodo != '' &&
-          contra != '') {
-        try {
-          final response = await http.post(
-            Uri.parse('${enlace}estudiante/crear'),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode(_estudiante.toJson()),
-          );
+          contra != '' &&
+          carreraSeleccionada?.nombre != '' &&
+          carreraSeleccionada?.nombre != null) {
+        bool confirmado = await mostrarConfirmacion(context);
 
-          final responseBody = jsonDecode(response.body);
-          print(responseBody);
-        } catch (error) {
-          print(error);
-        } finally {
-          // ignore: use_build_context_synchronously
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Carrusel()),
-          );
+        if (confirmado) {
+          try {
+            final response = await http.post(
+              Uri.parse('${enlace}estudiante/crear'),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: jsonEncode(_estudiante.toJson()),
+            );
+
+            final responseBody = jsonDecode(response.body);
+            print(responseBody);
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Usuario registrado con éxito'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+          } catch (error) {
+            print(error);
+          } finally {
+            // ignore: use_build_context_synchronously
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeGoogleSignIn()),
+            );
+          }
+
+          print(carreraSeleccionada?.idCarrera);
         }
       } else {
         dialogoerror('DATOS INCOMPLETOS', context);
@@ -166,6 +209,20 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
     } else {
       dialogoerror('CONTRASEÑAS NO COINCIDEN', context);
     }
+  }
+
+  void listarcarreras() async {
+    final url = Uri.parse('${enlace}carrera/listar');
+    http.get(url).then((response) {
+      final responseData = json.decode(response.body);
+
+      for (final carreraData in responseData) {
+        final carrera = Carrera.fromJson(carreraData);
+        carreras.add(carrera);
+      }
+    }).catchError((error) {
+      print(error);
+    });
   }
 
   @override
@@ -317,32 +374,37 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                   },
                 ),
                 const SizedBox(height: 20),
-                DropdownButtonFormField<String>(
-                  value: carreras,
-                  decoration: const InputDecoration(
-                    labelText: 'Carrera',
-                    labelStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(),
+                TypeAheadFormField<Carrera>(
+                  enabled: true,
+                  textFieldConfiguration: TextFieldConfiguration(
+                    decoration: const InputDecoration(
+                      labelText: 'Carrera',
+                      labelStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                    controller: _textController,
                   ),
-                  onChanged: (value) {
+                  suggestionsCallback: (pattern) async {
+                    return carreras
+                        .where((carrera) => carrera.nombre
+                            .toLowerCase()
+                            .contains(pattern.toLowerCase()))
+                        .toList();
+                  },
+                  itemBuilder: (context, Carrera suggestion) {
+                    return ListTile(
+                        title: Text(
+                      suggestion.nombre,
+                    ));
+                  },
+                  onSuggestionSelected: (Carrera suggestion) {
                     setState(() {
-                      _estudiante.carrera.nombre = value!;
+                      carreraSeleccionada = suggestion;
+                      _estudiante.carrera.id = suggestion.idCarrera;
+                      _textController.text = suggestion.nombre;
                     });
                   },
-                  items: [
-                    const DropdownMenuItem(
-                      value: 'Carrera 1',
-                      child: Text('Carrera 1'),
-                    ),
-                    const DropdownMenuItem(
-                      value: 'Carrera 2',
-                      child: Text('Carrera 2'),
-                    ),
-                    const DropdownMenuItem(
-                      value: 'Carrera 3',
-                      child: Text('Carrera 3'),
-                    ),
-                  ],
                 ),
                 const SizedBox(height: 20),
                 TextField(
@@ -367,6 +429,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                   onChanged: (valor) {
                     setState(() {
                       contra = valor;
+                      _estudiante.usuario.password = valor;
                     });
                   },
                 ),

@@ -23,7 +23,9 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
   @override
   void initState() {
     super.initState();
+    listarconvocatorias();
 
+/*
     final url = Uri.parse('${enlace}convocatoria/listar');
     http.get(url).then((response) {
       final responseData = json.decode(response.body);
@@ -74,7 +76,6 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                   firmaInst: TutorInstituto(
                     id: 0,
                     idDocente: '',
-                    rol: 0,
                     usuario: Usuario(
                       id: 0,
                       rol: 0,
@@ -103,6 +104,21 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
       setState(() {
         convocatorias = loadedConvocatorias;
       });
+    }).catchError((error) {
+      print(error);
+    });
+    */
+  }
+
+  void listarconvocatorias() async {
+    final url = Uri.parse('${enlace}convocatoria/listar');
+    http.get(url).then((response) {
+      final responseData = json.decode(response.body);
+      print(responseData);
+      for (final convocatoriaData in responseData) {
+        final convocatoria = Convocatoria.fromJson(convocatoriaData);
+        convocatorias.add(convocatoria);
+      }
     }).catchError((error) {
       print(error);
     });

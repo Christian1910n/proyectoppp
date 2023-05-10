@@ -27,6 +27,29 @@ Future<dynamic> dialogoerror(mensaje, BuildContext context) {
   );
 }
 
+Future<bool> mostrarConfirmacion(BuildContext context) async {
+  return await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Confirmación"),
+            content: const Text("¿Está seguro de que desea continuar?"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("Cancelar"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("Confirmar"),
+              ),
+            ],
+          );
+        },
+      ) ??
+      false;
+}
+
 Container MenuEstudiante() {
   return Container(
     decoration: BoxDecoration(

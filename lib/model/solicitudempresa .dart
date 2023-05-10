@@ -13,10 +13,19 @@ class SolicitudEmpresa {
       {required this.id,
       required this.numPracticantes,
       required this.numHoras,
-      required String fechaInicioTen,
-      required String fechaMaxTen,
+      required this.fechaInicioTen,
+      required this.fechaMaxTen,
       required this.estado,
-      required this.convenio})
-      : fechaInicioTen = DateTime.parse(fechaInicioTen),
-        fechaMaxTen = DateTime.parse(fechaMaxTen);
+      required this.convenio});
+
+  factory SolicitudEmpresa.fromJson(Map<String, dynamic> json) {
+    return SolicitudEmpresa(
+        id: json['id'],
+        numPracticantes: json['numPracticantes'],
+        numHoras: json['numHoras'],
+        fechaInicioTen: DateTime.parse(json['fechaInicioTen:']),
+        fechaMaxTen: DateTime(json['fechaMaxTen']),
+        estado: json['estado'],
+        convenio: json['convenio']);
+  }
 }
