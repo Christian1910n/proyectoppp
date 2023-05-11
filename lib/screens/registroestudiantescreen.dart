@@ -387,7 +387,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                   ),
                   suggestionsCallback: (pattern) async {
                     return carreras
-                        .where((carrera) => carrera.nombre
+                        .where((carrera) => carrera.nombre!
                             .toLowerCase()
                             .contains(pattern.toLowerCase()))
                         .toList();
@@ -395,14 +395,14 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                   itemBuilder: (context, Carrera suggestion) {
                     return ListTile(
                         title: Text(
-                      suggestion.nombre,
+                      suggestion.nombre!,
                     ));
                   },
                   onSuggestionSelected: (Carrera suggestion) {
                     setState(() {
                       carreraSeleccionada = suggestion;
                       _estudiante.carrera.id = suggestion.idCarrera;
-                      _textController.text = suggestion.nombre;
+                      _textController.text = suggestion.nombre!;
                     });
                   },
                 ),

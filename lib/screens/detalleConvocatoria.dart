@@ -19,7 +19,7 @@ class DetallesConvocatoria extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'CONVOCATORIA PRACTICAS PRE PROFESIONALES - ${convocatoria.solicitudEmpresa.convenio.empresa.nombre}\n',
+              'CONVOCATORIA PRACTICAS PRE PROFESIONALES - ${convocatoria.solicitudEmpresa!.convenio!.empresa!.nombre}\n',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -27,7 +27,7 @@ class DetallesConvocatoria extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Estimados y estimadas estudiantes, buen día. Por medio del presente, como carrera de Tecnología Superior en Desarrollo de Software, queremos hacerles llegar la invitación para que participen en la convocatoria de prácticas pre profesionales en la empresa ${convocatoria.solicitudEmpresa.convenio.empresa.nombre}.\n' +
+                'Estimados y estimadas estudiantes, buen día. Por medio del presente, como carrera de Tecnología Superior en Desarrollo de Software, queremos hacerles llegar la invitación para que participen en la convocatoria de prácticas pre profesionales en la empresa ${convocatoria.solicitudEmpresa!.convenio!.empresa!.nombre}.\n' +
                     '\nA continuación, en el documento adjunto, encontrarán los detalles de las actividades a realizar, y los plazos que disponen para hacer llegar la solicitud correspondiente. \nNota: Adjunto a la solicitud se debe remitir la hoja de vida, para lo cual deberá registrarse en el portal web encuentraempleo,  e imprimir el currículo en formato moderno a través del siguiente enlace: \nhttps://encuentraempleo.trabajo.gob.ec\n',
                 style: TextStyle(
                   fontSize: 16,

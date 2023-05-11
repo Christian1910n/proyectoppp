@@ -1,14 +1,10 @@
 class Carrera {
-  int id;
-  int idCarrera;
-  String nombre;
-  bool activo;
+  int? id;
+  int? idCarrera;
+  String? nombre;
+  bool? activo;
 
-  Carrera(
-      {required this.id,
-      required this.activo,
-      required this.idCarrera,
-      required this.nombre});
+  Carrera({this.id, this.activo, this.idCarrera, this.nombre});
 
   factory Carrera.fromJson(Map<String, dynamic> json) {
     return Carrera(

@@ -1,24 +1,24 @@
 class Usuario {
-  int id;
-  String cedula;
-  String nombre;
-  String apellido;
-  String correo;
-  String titulo;
-  String telefono;
-  bool activo;
-  String password;
+  int? id;
+  String? cedula;
+  String? nombre;
+  String? apellido;
+  String? correo;
+  String? titulo;
+  String? telefono;
+  bool? activo;
+  String? password;
 
   Usuario(
-      {required this.id,
-      required this.cedula,
-      required this.nombre,
-      required this.apellido,
-      required this.correo,
-      required this.titulo,
-      required this.telefono,
-      required this.activo,
-      required this.password});
+      {this.id,
+      this.cedula,
+      this.nombre,
+      this.apellido,
+      this.correo,
+      this.titulo,
+      this.telefono,
+      this.activo,
+      this.password});
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
     return Usuario(

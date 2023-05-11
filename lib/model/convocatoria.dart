@@ -1,26 +1,24 @@
 import 'package:proyectoppp/model/solicitudempresa .dart';
 
 class Convocatoria {
-  final int id;
-  final DateTime fechaInicio;
-  final DateTime fechaFin;
-  final int numero;
-  final SolicitudEmpresa solicitudEmpresa;
+  int? id;
+  DateTime? fechaInicio;
+  DateTime? fechaFin;
+  int? numero;
+  SolicitudEmpresa? solicitudEmpresa;
 
   Convocatoria(
-      {required this.id,
-      required String fechaInicio,
-      required String fechaFin,
-      required this.numero,
-      required this.solicitudEmpresa})
-      : fechaInicio = DateTime.parse(fechaInicio),
-        fechaFin = DateTime.parse(fechaFin);
+      {this.id,
+      this.fechaInicio,
+      this.fechaFin,
+      this.numero,
+      this.solicitudEmpresa});
 
   factory Convocatoria.fromJson(Map<String, dynamic> json) {
     return Convocatoria(
       id: json['id'],
-      fechaInicio: json['fechaInicio'],
-      fechaFin: (json['fechaFin']),
+      fechaInicio: DateTime.parse(json['fechaInicio']),
+      fechaFin: DateTime.parse(json['fechaFin']),
       numero: (json['numero:']),
       solicitudEmpresa: SolicitudEmpresa.fromJson(json['solicitudEmpresa']),
     );

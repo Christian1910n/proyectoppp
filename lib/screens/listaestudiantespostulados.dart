@@ -19,8 +19,8 @@ class EstudiantesPostulados extends StatelessWidget {
 
           return ListTile(
             title: Text(convocatorias.solicitudEmpresa.toString()),
-            subtitle: Text(convocatorias.solicitudEmpresa.numPracticantes.toString()),
-            
+            subtitle: Text(
+                convocatorias.solicitudEmpresa!.numPracticantes.toString()),
           );
         },
       ),

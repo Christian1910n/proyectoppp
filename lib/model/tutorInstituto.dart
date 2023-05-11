@@ -1,12 +1,11 @@
 import 'package:proyectoppp/model/Usuario.dart';
 
 class TutorInstituto {
-  final int id;
-  final String idDocente;
-  final Usuario usuario;
+  int? id;
+  String? idDocente;
+  Usuario? usuario;
 
-  TutorInstituto(
-      {required this.id, required this.idDocente, required this.usuario});
+  TutorInstituto({this.id, this.idDocente, this.usuario});
 
   factory TutorInstituto.fromJson(Map<String, dynamic> json) {
     return TutorInstituto(

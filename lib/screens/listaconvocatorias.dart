@@ -24,104 +24,31 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
   void initState() {
     super.initState();
     listarconvocatorias();
-
-/*
-    final url = Uri.parse('${enlace}convocatoria/listar');
-    http.get(url).then((response) {
-      final responseData = json.decode(response.body);
-      final List<Convocatoria> loadedConvocatorias = [];
-
-      for (final convocatoriaData in responseData) {
-        print(responseData);
-        final solicitudEmpresaData = convocatoriaData['solicitudEmpresa'];
-
-        final solicitudEmpresa = solicitudEmpresaData != null
-            ? SolicitudEmpresa(
-                id: solicitudEmpresaData['id'],
-                numPracticantes: solicitudEmpresaData['numPracticantes'],
-                numHoras: solicitudEmpresaData['numHoras'],
-                fechaInicioTen: (solicitudEmpresaData['fechaInicioTen']),
-                fechaMaxTen: (solicitudEmpresaData['fechaMaxTen']),
-                estado: solicitudEmpresaData['estado'],
-                convenio: Convenio.fromJson(solicitudEmpresaData['convenio']),
-              )
-            : SolicitudEmpresa(
-                id: 0,
-                numPracticantes: 0,
-                numHoras: 0,
-                fechaInicioTen: "2023-05-04",
-                fechaMaxTen: "2023-05-04",
-                estado: 0,
-                convenio: Convenio(
-                  id: 0,
-                  numero: 0,
-                  fechaInicio: "2023-05-04",
-                  fechaFin: "2023-05-04",
-                  empresa: Empresa(
-                    id: 0,
-                    ruc: '',
-                    nombre: 'Libelula software',
-                    matriz: '',
-                    mision: '',
-                    vision: '',
-                    objetivo: '',
-                    activo: false,
-                  ),
-                  carrera: Carrera(
-                    id: 0,
-                    idCarrera: 0,
-                    nombre: '',
-                    activo: false,
-                  ),
-                  firmaInst: TutorInstituto(
-                    id: 0,
-                    idDocente: '',
-                    usuario: Usuario(
-                      id: 0,
-                      rol: 0,
-                      cedula: '',
-                      nombre: '',
-                      apellido: '',
-                      correo: '',
-                      titulo: '',
-                      telefono: '',
-                      activo: false,
-                    ),
-                  ),
-                ),
-              );
-
-        loadedConvocatorias.add(Convocatoria(
-          id: convocatoriaData['id'],
-          fechaInicio: convocatoriaData['fechaInicio'],
-          fechaFin: convocatoriaData['fechaFin'],
-          numero: convocatoriaData['numero'],
-          solicitudEmpresa: solicitudEmpresa,
-        ));
-        print(loadedConvocatorias);
-      }
-
-      setState(() {
-        convocatorias = loadedConvocatorias;
-      });
-    }).catchError((error) {
-      print(error);
-    });
-    */
   }
 
   void listarconvocatorias() async {
     final url = Uri.parse('${enlace}convocatoria/listar');
-    http.get(url).then((response) {
-      final responseData = json.decode(response.body);
-      print(responseData);
-      for (final convocatoriaData in responseData) {
-        final convocatoria = Convocatoria.fromJson(convocatoriaData);
-        convocatorias.add(convocatoria);
+    List<Convocatoria> convocatoriass = [];
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = json.decode(response.body);
+      print(response.body);
+      for (dynamic convocatoriaJson in jsonResponse) {
+        Convocatoria convocatoria = Convocatoria.fromJson(convocatoriaJson);
+        if (convocatoria.solicitudEmpresa?.convenio != null) {
+          String empresaNombre =
+              convocatoria.solicitudEmpresa!.convenio!.empresa?.nombre ?? "";
+          convocatoria.solicitudEmpresa!.convenio!.empresa?.nombre =
+              empresaNombre;
+        }
+        convocatoriass.add(convocatoria);
+        setState(() {
+          convocatorias = convocatoriass;
+        });
       }
-    }).catchError((error) {
-      print(error);
-    });
+    }
   }
 
   @override
@@ -132,21 +59,21 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
           decoration: InputDecoration(
             hintText: 'Buscar',
             border: InputBorder.none,
-            prefixIcon: Icon(Icons.search),
+            prefixIcon: const Icon(Icons.search),
             suffixIcon: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
                 PopupMenuButton(
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       child: Text('Nombre'),
                     ),
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       child: Text('Fecha'),
                     ),
                   ],
-                  icon: Icon(Icons.more_vert),
+                  icon: const Icon(Icons.more_vert),
                 ),
               ],
             ),
@@ -157,25 +84,19 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 10),
-            Text('Lista de convocatorias',
+            const SizedBox(height: 10),
+            const Text('Lista de convocatorias',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ListView.separated(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: convocatorias.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text(
-                    "CONVOCATORIA PRACTICAS PRE PROFESIONALES - " +
-                        convocatorias[index]
-                            .solicitudEmpresa
-                            .convenio
-                            .empresa
-                            .nombre
-                            .toString(),
-                    style: TextStyle(
+                    "CONVOCATORIA PRACTICAS PRE PROFESIONALES - ${convocatorias[index].solicitudEmpresa!.convenio!.empresa!.nombre}",
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -189,7 +110,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                           children: <TextSpan>[
                             TextSpan(
                               text: convocatorias[index].fechaInicio.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color.fromARGB(255, 7, 178, 67),
                               ),
                             ),
@@ -203,7 +124,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                           children: <TextSpan>[
                             TextSpan(
                               text: convocatorias[index].fechaFin.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.orange,
                               ),
                             ),

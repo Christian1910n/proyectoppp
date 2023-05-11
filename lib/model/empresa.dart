@@ -1,21 +1,21 @@
 class Empresa {
   final int id;
-  final String ruc;
-  final String nombre;
-  final String matriz;
-  final String mision;
-  final String vision;
-  final String objetivo;
+  String? ruc;
+  String? nombre;
+  String? matriz;
+  String? mision;
+  String? vision;
+  String? objetivo;
   final bool activo;
 
   Empresa(
       {required this.id,
-      required this.ruc,
-      required this.nombre,
-      required this.matriz,
-      required this.mision,
+      this.ruc,
+      this.nombre,
+      this.matriz,
+      this.mision,
       required this.activo,
-      required this.objetivo,
+      this.objetivo,
       required this.vision});
 
   factory Empresa.fromJson(Map<String, dynamic> json) {
