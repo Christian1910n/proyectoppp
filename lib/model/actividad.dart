@@ -12,4 +12,13 @@ class Actividad {
       required this.descripcion,
       required this.solicitudEmpresa,
       required this.materia});
+
+  factory Actividad.fromJson(Map<String, dynamic> json) {
+    return Actividad(
+      id: json['id'],
+      descripcion: json['descripcion'],
+      solicitudEmpresa: SolicitudEmpresa.fromJson(json['solicitudEmpresa']),
+      materia: Materia.fromJson(json['materia']),
+    );
+  }
 }

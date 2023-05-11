@@ -13,4 +13,10 @@ class TutorInstituto {
         idDocente: json['idDocente'],
         usuario: Usuario.fromJson(json['usuario']));
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'idDocente': idDocente,
+        'usuario': usuario,
+      };
 }

@@ -30,4 +30,14 @@ class SolicitudEmpresa {
       convenio: Convenio.fromJson(json['convenio']),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'numPracticantes': numPracticantes,
+        'numHoras': numHoras,
+        'fechaInicioTen': fechaInicioTen,
+        'fechaMaxTen': fechaMaxTen,
+        'estado': estado,
+        'convenio': convenio,
+      };
 }

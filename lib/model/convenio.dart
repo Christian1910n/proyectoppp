@@ -31,4 +31,14 @@ class Convenio {
       firmaInst: TutorInstituto.fromJson(json['firmaInst']),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'numero': numero,
+        'fechaInicio': fechaInicio,
+        'fechaFin': fechaFin,
+        'empresa': empresa,
+        'carrera': carrera,
+        'firmaInst': firmaInst,
+      };
 }

@@ -1,14 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:proyectoppp/model/Carrera.dart';
-import 'package:proyectoppp/model/Usuario.dart';
-import 'package:proyectoppp/model/convenio.dart';
 import 'package:proyectoppp/model/convocatoria.dart';
-import 'package:proyectoppp/model/empresa.dart';
-import 'package:proyectoppp/model/solicitudempresa .dart';
-import 'package:proyectoppp/model/tutorInstituto.dart';
 import 'package:proyectoppp/screens/detalleConvocatoria.dart';
+import 'package:intl/intl.dart';
 
 import '../utils/url.dart';
 
@@ -53,100 +48,114 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          decoration: InputDecoration(
-            hintText: 'Buscar',
-            border: InputBorder.none,
-            prefixIcon: const Icon(Icons.search),
-            suffixIcon: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                PopupMenuButton(
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                    const PopupMenuItem(
-                      child: Text('Nombre'),
-                    ),
-                    const PopupMenuItem(
-                      child: Text('Fecha'),
-                    ),
-                  ],
-                  icon: const Icon(Icons.more_vert),
-                ),
-              ],
+    return Theme(
+      data: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF2196F3),
+          secondary: Color(0xFFFFC107),
+        ),
+      ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: TextField(
+            decoration: InputDecoration(
+              hintText: 'Buscar',
+              border: InputBorder.none,
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  PopupMenuButton(
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                      const PopupMenuItem(
+                        child: Text('Nombre'),
+                      ),
+                      const PopupMenuItem(
+                        child: Text('Fecha'),
+                      ),
+                    ],
+                    icon: const Icon(Icons.more_vert),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      drawer: MenuEstudiante(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            const Text('Lista de convocatorias',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: convocatorias.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(
-                    "CONVOCATORIA PRACTICAS PRE PROFESIONALES - ${convocatorias[index].solicitudEmpresa!.convenio!.empresa!.nombre}",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+        drawer: MenuEstudiante(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              const Text('Lista de convocatorias',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: convocatorias.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final fechaInicio = DateFormat('dd/MM/yyyy')
+                      .format(convocatorias[index].fechaInicio!);
+                  final fechaFin = DateFormat('dd/MM/yyyy')
+                      .format(convocatorias[index].fechaFin!);
+                  return ListTile(
+                    title: Text(
+                      "CONVOCATORIA PRACTICAS PRE PROFESIONALES - ${convocatorias[index].solicitudEmpresa!.convenio!.empresa!.nombre}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: 'Fecha inicio:\n',
-                          style: DefaultTextStyle.of(context).style,
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: convocatorias[index].fechaInicio.toString(),
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 7, 178, 67),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'Fecha inicio:\n',
+                            style: DefaultTextStyle.of(context).style,
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: fechaInicio,
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 7, 178, 67),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          text: 'Fecha fin:\n',
-                          style: DefaultTextStyle.of(context).style,
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: convocatorias[index].fechaFin.toString(),
-                              style: const TextStyle(
-                                color: Colors.orange,
+                        RichText(
+                          text: TextSpan(
+                            text: 'Fecha fin:\n',
+                            style: DefaultTextStyle.of(context).style,
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: fechaFin,
+                                style: const TextStyle(
+                                  color: Colors.orange,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            DetallesConvocatoria(convocatorias[index]),
-                      ),
-                    );
-                  },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) => Divider(),
-            ),
-          ],
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DetallesConvocatoria(convocatorias[index]),
+                        ),
+                      );
+                    },
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    Divider(),
+              ),
+            ],
+          ),
         ),
       ),
     );
