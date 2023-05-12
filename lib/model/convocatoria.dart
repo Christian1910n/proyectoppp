@@ -19,8 +19,16 @@ class Convocatoria {
       id: json['id'],
       fechaInicio: DateTime.parse(json['fechaInicio']),
       fechaFin: DateTime.parse(json['fechaFin']),
-      numero: (json['numero:']),
+      numero: json['numero'],
       solicitudEmpresa: SolicitudEmpresa.fromJson(json['solicitudEmpresa']),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'numero': numero,
+        'fechaInicio': fechaInicio,
+        'fechaFin': fechaFin,
+        'solicitudEmpresa': solicitudEmpresa,
+      };
 }

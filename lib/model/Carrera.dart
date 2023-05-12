@@ -15,5 +15,5 @@ class Carrera {
   }
 
   Map<String, dynamic> toJson() =>
-      {'id': id, 'idCarrera': idCarrera, 'nombre': nombre, 'acttivo': activo};
+      {'id': id, 'idCarrera': idCarrera, 'nombre': nombre, 'activo': activo};
 }

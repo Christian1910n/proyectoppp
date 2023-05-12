@@ -17,7 +17,7 @@ class Materia {
       id: json['id'],
       idMateria: json['idMateria'],
       nombre: json['nombre'],
-      carrera: Carrera.fromJson(json['solicitudEmpresa']),
+      carrera: Carrera.fromJson(json['carrera']),
     );
   }
 }

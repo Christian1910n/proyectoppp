@@ -25,24 +25,28 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
     final url = Uri.parse('${enlace}convocatoria/listar');
     List<Convocatoria> convocatoriass = [];
 
-    final response = await http.get(url);
+    try {
+      final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = json.decode(response.body);
-      print(response.body);
-      for (dynamic convocatoriaJson in jsonResponse) {
-        Convocatoria convocatoria = Convocatoria.fromJson(convocatoriaJson);
-        if (convocatoria.solicitudEmpresa?.convenio != null) {
-          String empresaNombre =
-              convocatoria.solicitudEmpresa!.convenio!.empresa?.nombre ?? "";
-          convocatoria.solicitudEmpresa!.convenio!.empresa?.nombre =
-              empresaNombre;
+      if (response.statusCode == 200) {
+        List<dynamic> jsonResponse = json.decode(response.body);
+        print(response.body);
+        for (dynamic convocatoriaJson in jsonResponse) {
+          Convocatoria convocatoria = Convocatoria.fromJson(convocatoriaJson);
+          if (convocatoria.solicitudEmpresa?.convenio != null) {
+            String empresaNombre =
+                convocatoria.solicitudEmpresa!.convenio!.empresa?.nombre ?? "";
+            convocatoria.solicitudEmpresa!.convenio!.empresa?.nombre =
+                empresaNombre;
+          }
+          convocatoriass.add(convocatoria);
+          setState(() {
+            convocatorias = convocatoriass;
+          });
         }
-        convocatoriass.add(convocatoria);
-        setState(() {
-          convocatorias = convocatoriass;
-        });
       }
+    } catch (error) {
+      print(error);
     }
   }
 
@@ -57,32 +61,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
         ),
       ),
       child: Scaffold(
-        appBar: AppBar(
-          title: TextField(
-            decoration: InputDecoration(
-              hintText: 'Buscar',
-              border: InputBorder.none,
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  PopupMenuButton(
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                      const PopupMenuItem(
-                        child: Text('Nombre'),
-                      ),
-                      const PopupMenuItem(
-                        child: Text('Fecha'),
-                      ),
-                    ],
-                    icon: const Icon(Icons.more_vert),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        appBar: AppBar(),
         drawer: MenuEstudiante(),
         body: SingleChildScrollView(
           child: Column(

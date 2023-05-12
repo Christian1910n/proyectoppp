@@ -157,3 +157,25 @@ Container MenuEstudiante() {
     ),
   );
 }
+
+String toTitleCase(String text) {
+  if (text == null) {
+    return '';
+  }
+  return text
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word[0].toUpperCase() + word.substring(1))
+      .join(' ');
+}
+
+String abreviarCarrera(String carrera) {
+  List<String> palabras = carrera.split(' ');
+  String abreviatura = '';
+  for (int i = 0; i < palabras.length; i++) {
+    if (palabras[i].isNotEmpty && palabras[i].length > 3) {
+      abreviatura += palabras[i][0].toUpperCase();
+    }
+  }
+  return abreviatura;
+}

@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:proyectoppp/model/actividad.dart';
 import 'package:proyectoppp/model/convocatoria.dart';
 import 'package:proyectoppp/screens/pdg_page.dart';
 import 'package:proyectoppp/utils/url.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class DetallesConvocatoria extends StatefulWidget {
   final Convocatoria convocatoria;
@@ -20,25 +22,33 @@ class _DetallesConvocatoriaState extends State<DetallesConvocatoria> {
   List<Actividad> actividades = [];
   late Convocatoria _convocatoria;
 
-  Future<List<Actividad>> obtenerActividadesPorSolicitudEmpresa() async {
+  void listaractividaes() async {
+    await initializeDateFormatting('es_ES');
     final url = Uri.parse(
-        'http://localhost:8080/actividad/listarxSolicitudEmpresa?solicitudEmpresa=${json.encode(_convocatoria.solicitudEmpresa)}');
-    final response =
-        await http.get(url, headers: {'Content-Type': 'application/json'});
+        '${enlace}actividad/listarxSolicitudEmpresa2?id=${_convocatoria.solicitudEmpresa?.id.toString()}');
+    List<Actividad> loadactividades = [];
+
+    final response = await http.get(url);
+    print(response.body);
 
     if (response.statusCode == 200) {
-      final List<dynamic> actividadesJson = json.decode(response.body);
-      return actividadesJson.map((json) => Actividad.fromJson(json)).toList();
-    } else {
-      throw Exception(
-          'Error al obtener las actividades: ${response.statusCode}');
+      List<dynamic> jsonResponse = json.decode(response.body);
+      print(response.body);
+      for (dynamic actividadJson in jsonResponse) {
+        Actividad actividad = Actividad.fromJson(actividadJson);
+
+        loadactividades.add(actividad);
+      }
+      setState(() {
+        actividades = loadactividades;
+      });
     }
   }
 
   @override
   void initState() {
     _convocatoria = widget.convocatoria;
-    actividades = obtenerActividadesPorSolicitudEmpresa() as List<Actividad>;
+    listaractividaes();
 
     super.initState();
     print(actividades.length);
@@ -46,23 +56,45 @@ class _DetallesConvocatoriaState extends State<DetallesConvocatoria> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detalles de convocatoria'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'CONVOCATORIA PRACTICAS PRE PROFESIONALES - ${_convocatoria.solicitudEmpresa!.convenio!.empresa!.nombre}\n',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
+    final fechafin = DateFormat('EEEE dd \'de\' MMMM \'del\' y', 'es')
+        .format(_convocatoria.fechaFin!);
 
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
+    final materiasUnicas = <String>{};
+    for (var actividad in actividades) {
+      materiasUnicas.add(actividad.materia.nombre);
+    }
+
+    return Theme(
+      data: ThemeData(brightness: Brightness.dark),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Convocatoria'),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'CONVOCATORIA PRÁCTICAS PRE PROFESIONALES',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Empresa: ${_convocatoria.solicitudEmpresa!.convenio!.empresa!.nombre}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
                 'Se convoca a los estudiantes de la carrera de ${_convocatoria.solicitudEmpresa!.convenio!.carrera!.nombre} que deseen realizar sus prácticas preprofesionales en la empresa ${_convocatoria.solicitudEmpresa!.convenio!.empresa!.nombre}, a presentar la solicitud correspondiente.',
                 style: const TextStyle(
                   fontSize: 16,
@@ -70,62 +102,114 @@ class _DetallesConvocatoriaState extends State<DetallesConvocatoria> {
                 ),
                 textAlign: TextAlign.justify,
               ),
-            ),
-            const SizedBox(height: 20), // Espacio entre el texto y el botón
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Las actividades a desarrollar son:',
+              const SizedBox(height: 25),
+              const Text(
+                'Actividades',
                 style: TextStyle(
-                  fontSize: 16,
-                  letterSpacing: 0.5,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
                 ),
-                textAlign: TextAlign.justify,
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 20),
-            const SizedBox(height: 20),
-            if (actividades.isNotEmpty)
-              Column(
-                children: [
-                  for (var actividad in actividades)
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        actividad.descripcion,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          letterSpacing: 0.5,
+              const SizedBox(height: 10),
+              if (actividades.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var actividad in actividades)
+                      ListTile(
+                        leading: const CircleAvatar(
+                          radius: 4,
+                          backgroundColor: Colors.black,
                         ),
-                        textAlign: TextAlign.justify,
+                        title: Text(
+                          actividad.descripcion,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            letterSpacing: 0.5,
+                          ),
+                          textAlign: TextAlign.justify,
+                        ),
                       ),
-                    ),
-                ],
-              ),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Por lo que los postulantes deberán haber aprobado las siguientes asignaturas:',
-                style: TextStyle(
-                  fontSize: 16,
-                  letterSpacing: 0.5,
+                  ],
                 ),
-                textAlign: TextAlign.justify,
+              if (actividades.isEmpty)
+                const Text(
+                  'No se han registrado actividades para esta convocatoria.',
+                  style: TextStyle(
+                    fontSize: 16,
+                    letterSpacing: 0.5,
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              const SizedBox(height: 25),
+              const Text(
+                'Requisitos',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 20), // Espacio entre el texto y el botón
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PdfPage()),
-                  );
-                },
-                child: Text('Postular'),
+              const SizedBox(height: 10),
+              if (actividades.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var materia in materiasUnicas)
+                      ListTile(
+                        leading: const CircleAvatar(
+                          radius: 4,
+                          backgroundColor: Colors.black,
+                        ),
+                        title: Text(
+                          materia,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            letterSpacing: 0.5,
+                          ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                  ],
+                ),
+              if (actividades.isEmpty)
+                const Text(
+                  'No se han registrado materias para esta convocatoria.',
+                  style: TextStyle(
+                    fontSize: 16,
+                    letterSpacing: 0.5,
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              const SizedBox(height: 20),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'La fecha máxima en la que se receptarán las solicitudes es el día $fechafin',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    letterSpacing: 0.5,
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
               ),
-            ),
-          ],
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PdfPage(_convocatoria)),
+                    );
+                  },
+                  child: Text('Postular'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
