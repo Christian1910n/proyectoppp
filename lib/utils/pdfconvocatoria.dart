@@ -9,15 +9,11 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 //Variables documento
-const String nombres = "GARAICOA CARABAJO CHRISTIAN FERNANDO";
-const String cedula = "0105578173";
+
 const String ciclo = "egresado";
 //const String ciclo = "del quinto ciclo";
 
 const String periodo = "Noviembre 2022 - Marzo 2023 ";
-const String nyapellido = "Christian Garaicoa";
-const String celular = "0992087790";
-const String correo = "christian.garaicoa.est@tecazuay.edu.ec";
 
 Future<void> saveAsFile(
   final BuildContext context,

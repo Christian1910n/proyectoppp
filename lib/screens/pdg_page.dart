@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:proyectoppp/model/Usuario.dart';
+import 'package:proyectoppp/screens/listaconvocatorias.dart';
 import 'package:proyectoppp/utils/pdfconvocatoria.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -13,7 +15,8 @@ import '../model/convocatoria.dart';
 
 class PdfPage extends StatefulWidget {
   final Convocatoria convocatoria;
-  PdfPage(this.convocatoria);
+  final Usuario usuario;
+  PdfPage(this.convocatoria, this.usuario);
 
   @override
   State<PdfPage> createState() => _PdfPageState();
@@ -24,9 +27,13 @@ class _PdfPageState extends State<PdfPage> {
   Convocatoria? _convocatoria;
   late String bodyText1;
   late String fecha;
+  late Usuario usuario;
   late String responsablepp;
   String? carrera;
   String _nroconvocatoria = '';
+  String nyapellido = "";
+  String celular = "";
+  String correo = "";
 
   Future<Uint8List> generatePdf(final PdfPageFormat format) async {
     final doc = pw.Document(title: 'Solicitud de Practicas PPP');
@@ -387,6 +394,7 @@ class _PdfPageState extends State<PdfPage> {
   @override
   void initState() {
     _convocatoria = widget.convocatoria;
+    usuario = widget.usuario;
 
     DateTime fechaactual = DateTime.now();
     fecha = DateFormat('dd \'de\' MMMM \'del\' y', 'es').format(fechaactual);
@@ -410,8 +418,21 @@ class _PdfPageState extends State<PdfPage> {
 
     print(_convocatoria!.id);
 
+    String nombres = '${usuario.apellido} ${usuario.nombre}';
+
+    String nfirma = '${usuario.nombre} ${usuario.apellido}';
+    List<String> nombress = nfirma.split(' ');
+    String primerNombre = nombress[0];
+    String primerApellido = nombress[nombress.length - 1];
+    String nombreCompleto = '$primerNombre $primerApellido';
+    nyapellido = '$primerNombre $primerApellido';
+
+    celular = usuario.telefono!;
+
+    correo = usuario.correo!;
+
     bodyText1 =
-        "Por medio de la presente, Yo, $nombres, con número de cédula $cedula, estudiante $ciclo del periodo académico $periodo de la carrera de Tecnología Superior en Desarrollo de Software, solicito comedidamente se autorice mi postulación para realizar las 240 horas de prácticas pre profesionales en la empresa ${_convocatoria?.solicitudEmpresa!.convenio!.empresa!.nombre} según solicitud: $_nroconvocatoria";
+        "Por medio de la presente, Yo, $nombres, con número de cédula ${usuario.cedula}, estudiante $ciclo del periodo académico $periodo de la carrera de Tecnología Superior en Desarrollo de Software, solicito comedidamente se autorice mi postulación para realizar las 240 horas de prácticas pre profesionales en la empresa ${_convocatoria?.solicitudEmpresa!.convenio!.empresa!.nombre} según solicitud: $_nroconvocatoria";
 
     super.initState();
   }
@@ -446,10 +467,39 @@ class _PdfPageState extends State<PdfPage> {
         appBar: AppBar(
           title: const Text('Solicitud Estudiantes'),
         ),
-        body: PdfPreview(
-          maxPageWidth: 700,
-          onShared: showSharedToast,
-          build: generatePdf,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: PdfPreview(
+                      maxPageWidth: 700,
+                      onShared: showSharedToast,
+                      build: generatePdf,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+                'Firma la solicitud y subela mediante nuestra pagina web'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          listaConvocatoria(usuario: usuario)),
+                );
+              },
+              child: const Text('Regresar al inicio'),
+            ),
+          ],
         ),
       ),
     );

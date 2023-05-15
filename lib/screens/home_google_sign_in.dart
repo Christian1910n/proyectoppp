@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:proyectoppp/model/Usuario.dart';
 import 'package:proyectoppp/screens/carrusel.dart';
 import 'package:proyectoppp/model/logindata.dart';
 import 'package:lottie/lottie.dart';
@@ -16,53 +18,59 @@ class HomeGoogleSignIn extends StatefulWidget {
 
 class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   late LoginData _loginData;
-  String _token = '';
   bool _showPassword = false;
   bool _loading = false;
 
   Future<void> login() async {
-    /*
     setState(() {
       _loading = true;
     });
-
-    
     try {
-      final response = await http.post(
-        Uri.parse('${enlace}api/usuarios/login'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(_loginData.toJson()),
-      );
+      final auth =
+          'Basic ${base64Encode(utf8.encode('${_loginData.usuario}:${_loginData.contra}'))}';
+
+      final url = '${enlace}ingresar';
+      final response =
+          await http.get(Uri.parse(url), headers: {'Authorization': auth});
+
       if (response.statusCode == 200) {
-        final responseBody = jsonDecode(response.body);
-        _token = responseBody['token'];
+        final token = response.headers['authorization'];
+        print('Token de acceso: $token');
+        tokenacceso = token!;
+
+        final jsons = json.decode(response.body);
+        final usuario = Usuario.fromJson(jsons);
+
+        final cookie = response.headers['set-cookie'];
+        cookieacceso = cookie;
+
+        // Hacer algo con la cookie
+        print('La cookie es: $cookie');
+
+        final decodedToken = JwtDecoder.decode(token);
+        final authorities = decodedToken['authorities'];
+        print(authorities);
 
         // ignore: use_build_context_synchronously
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Carrusel()),
+          MaterialPageRoute(
+              builder: (context) => listaConvocatoria(usuario: usuario)),
         );
       } else {
-        print('${_loginData.usuario}h');
-        print('${_loginData.contra}h');
-        // ignore: use_build_context_synchronously
+        print('Error: ${response.statusCode}');
         dialogoerror('USUARIO O CONTRASEÑA INCORRECTA', context);
       }
+      print(response.body);
     } catch (error) {
       print(error);
     } finally {
-      setState(() {
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
     }
-    */
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => listaConvocatoria()),
-    );
   }
 
   @override

@@ -159,55 +159,61 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
   }
 
   Future<void> registrarestudiante() async {
-    if (contra == rcontra) {
-      if (_estudiante.usuario.cedula != '' &&
-          _estudiante.usuario.nombre != '' &&
-          _estudiante.usuario.apellido != '' &&
-          _estudiante.usuario.telefono != '' &&
-          _estudiante.usuario.correo != '' &&
-          _estudiante.ciclo != '' &&
-          _estudiante.periodo != '' &&
-          contra != '' &&
-          carreraSeleccionada?.nombre != '' &&
-          carreraSeleccionada?.nombre != null) {
-        bool confirmado = await mostrarConfirmacion(context);
+    if (validatePassword(_estudiante.usuario.password!)) {
+      if (contra == rcontra) {
+        if (_estudiante.usuario.cedula != '' &&
+            _estudiante.usuario.nombre != '' &&
+            _estudiante.usuario.apellido != '' &&
+            _estudiante.usuario.telefono != '' &&
+            _estudiante.usuario.correo != '' &&
+            _estudiante.ciclo != '' &&
+            _estudiante.periodo != '' &&
+            contra != '' &&
+            carreraSeleccionada?.nombre != '' &&
+            carreraSeleccionada?.nombre != null) {
+          bool confirmado = await mostrarConfirmacion(context);
 
-        if (confirmado) {
-          try {
-            final response = await http.post(
-              Uri.parse('${enlace}estudiante/crear'),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: jsonEncode(_estudiante.toJson()),
-            );
+          if (confirmado) {
+            try {
+              final response = await http.post(
+                Uri.parse('${enlace}register'),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: jsonEncode(_estudiante.toJson()),
+              );
 
-            final responseBody = jsonDecode(response.body);
-            print(responseBody);
-            // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Usuario registrado con éxito'),
-                duration: Duration(seconds: 3),
-              ),
-            );
-          } catch (error) {
-            print(error);
-          } finally {
-            // ignore: use_build_context_synchronously
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomeGoogleSignIn()),
-            );
+              final responseBody = jsonDecode(response.body);
+              print(responseBody);
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Usuario registrado con éxito'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            } catch (error) {
+              print(error);
+            } finally {
+              // ignore: use_build_context_synchronously
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeGoogleSignIn()),
+              );
+            }
+
+            print(carreraSeleccionada?.idCarrera);
           }
-
-          print(carreraSeleccionada?.idCarrera);
+        } else {
+          dialogoerror('DATOS INCOMPLETOS', context);
         }
       } else {
-        dialogoerror('DATOS INCOMPLETOS', context);
+        dialogoerror('CONTRASEÑAS NO COINCIDEN', context);
       }
     } else {
-      dialogoerror('CONTRASEÑAS NO COINCIDEN', context);
+      dialogoerror(
+          'CONTRASEÑA DEBE TENER 8 CARACTERES INCLUYENDO MAYUSCULAS, NUMEROS Y CARACTERES ESPECIALES',
+          context);
     }
   }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:proyectoppp/model/Usuario.dart';
 import 'package:proyectoppp/model/actividad.dart';
 import 'package:proyectoppp/model/convocatoria.dart';
 import 'package:proyectoppp/screens/pdg_page.dart';
@@ -11,8 +12,9 @@ import 'package:intl/date_symbol_data_local.dart';
 
 class DetallesConvocatoria extends StatefulWidget {
   final Convocatoria convocatoria;
+  final Usuario usuario;
 
-  DetallesConvocatoria(this.convocatoria);
+  DetallesConvocatoria(this.convocatoria, this.usuario);
 
   @override
   _DetallesConvocatoriaState createState() => _DetallesConvocatoriaState();
@@ -28,7 +30,8 @@ class _DetallesConvocatoriaState extends State<DetallesConvocatoria> {
         '${enlace}actividad/listarxSolicitudEmpresa2?id=${_convocatoria.solicitudEmpresa?.id.toString()}');
     List<Actividad> loadactividades = [];
 
-    final response = await http.get(url);
+    final response =
+        await http.get(url, headers: {"Authorization": tokenacceso});
     print(response.body);
 
     if (response.statusCode == 200) {
@@ -202,7 +205,8 @@ class _DetallesConvocatoriaState extends State<DetallesConvocatoria> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PdfPage(_convocatoria)),
+                          builder: (context) =>
+                              PdfPage(_convocatoria, widget.usuario)),
                     );
                   },
                   child: Text('Postular'),

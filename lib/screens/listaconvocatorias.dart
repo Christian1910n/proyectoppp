@@ -5,20 +5,28 @@ import 'package:proyectoppp/model/convocatoria.dart';
 import 'package:proyectoppp/screens/detalleConvocatoria.dart';
 import 'package:intl/intl.dart';
 
+import '../model/Usuario.dart';
 import '../utils/url.dart';
 
 class listaConvocatoria extends StatefulWidget {
+  final Usuario usuario;
+
+  listaConvocatoria({required this.usuario});
+
   @override
   _listaConvocatoriaState createState() => _listaConvocatoriaState();
 }
 
 class _listaConvocatoriaState extends State<listaConvocatoria> {
   List<Convocatoria> convocatorias = [];
+  late Usuario usuario;
 
   @override
   void initState() {
+    usuario = widget.usuario;
     super.initState();
     listarconvocatorias();
+    print('hola $tokenacceso');
   }
 
   void listarconvocatorias() async {
@@ -26,7 +34,14 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
     List<Convocatoria> convocatoriass = [];
 
     try {
-      final response = await http.get(url);
+      final token = tokenacceso; // reemplaza con tu token
+      final cookie = cookieacceso;
+      print('Hola token $tokenacceso');
+      print('Hola cookie> $cookie'); // reemplaza con tu cookie
+      final response = await http.get(
+        url,
+        headers: {"Authorization": token},
+      );
 
       if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
@@ -62,7 +77,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
       ),
       child: Scaffold(
         appBar: AppBar(),
-        drawer: MenuEstudiante(),
+        drawer: MenuEstudiante(usuario, context),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -123,8 +138,8 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              DetallesConvocatoria(convocatorias[index]),
+                          builder: (context) => DetallesConvocatoria(
+                              convocatorias[index], usuario),
                         ),
                       );
                     },

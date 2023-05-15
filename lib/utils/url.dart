@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:googleapis/servicemanagement/v1.dart';
+import 'package:proyectoppp/screens/carrusel.dart';
+import 'package:proyectoppp/screens/listaconvocatorias.dart';
+
+import '../model/Usuario.dart';
+import '../screens/Perfil.dart';
 
 String enlace = "http://192.168.68.110:8080/";
+
+String tokenacceso = '';
+late var cookieacceso;
 
 Future<dynamic> dialogoerror(mensaje, BuildContext context) {
   return showDialog(
@@ -50,7 +58,13 @@ Future<bool> mostrarConfirmacion(BuildContext context) async {
       false;
 }
 
-Container MenuEstudiante() {
+final RegExp passwordRegExp =
+    RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+bool validatePassword(String password) {
+  return passwordRegExp.hasMatch(password);
+}
+
+Container MenuEstudiante(Usuario usuario, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(color: Colors.blue),
@@ -81,14 +95,14 @@ Container MenuEstudiante() {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(top: 20.0),
                         child: Text(
-                          "CHRISTIAN GARAICOA",
-                          style: TextStyle(
+                          '${usuario.nombre} ${usuario.apellido}',
+                          style: const TextStyle(
                             color: Colors.blue,
-                            fontFamily: 'cursive',
-                            fontSize: 20.0,
+                            fontFamily: 'papyrus',
+                            fontSize: 14.0,
                           ),
                         ),
                       ),
@@ -110,7 +124,12 @@ Container MenuEstudiante() {
                   ),
                   tileColor: Colors.black,
                   onTap: () {
-                    // Handle onTap event
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              listaConvocatoria(usuario: usuario)),
+                    );
                   },
                 ),
                 ListTile(
@@ -128,7 +147,11 @@ Container MenuEstudiante() {
                   ),
                   tileColor: Colors.black,
                   onTap: () {
-                    // Handle onTap event
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Perfil(usuario: usuario)),
+                    );
                   },
                 ),
               ],
@@ -149,7 +172,11 @@ Container MenuEstudiante() {
             ),
             tileColor: Colors.black,
             onTap: () {
-              // Handle onTap event
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Carrusel()),
+              );
+              tokenacceso = '';
             },
           ),
         ],
