@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -25,26 +26,32 @@ class _DetallesConvocatoriaState extends State<DetallesConvocatoria> {
   late Convocatoria _convocatoria;
 
   void listaractividaes() async {
-    await initializeDateFormatting('es_ES');
-    final url = Uri.parse(
-        '${enlace}actividad/listarxSolicitudEmpresa2?id=${_convocatoria.solicitudEmpresa?.id.toString()}');
-    List<Actividad> loadactividades = [];
+    try {
+      await initializeDateFormatting('es_ES');
+      final url = Uri.parse(
+          '${enlace}actividad/listarxSolicitudEmpresa2?id=${_convocatoria.solicitudEmpresa?.id.toString()}');
+      List<Actividad> loadactividades = [];
 
-    final response =
-        await http.get(url, headers: {"Authorization": tokenacceso});
-    print(response.body);
-
-    if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = json.decode(response.body);
+      final response =
+          await http.get(url, headers: {"Authorization": tokenacceso});
       print(response.body);
-      for (dynamic actividadJson in jsonResponse) {
-        Actividad actividad = Actividad.fromJson(actividadJson);
 
-        loadactividades.add(actividad);
+      if (response.statusCode == 200) {
+        List<dynamic> jsonResponse = json.decode(response.body);
+        print(response.body);
+        for (dynamic actividadJson in jsonResponse) {
+          Actividad actividad = Actividad.fromJson(actividadJson);
+
+          loadactividades.add(actividad);
+        }
+        setState(() {
+          actividades = loadactividades;
+        });
+      } else {
+        print('Error Actividades ${response.statusCode}');
       }
-      setState(() {
-        actividades = loadactividades;
-      });
+    } catch (error) {
+      print(error);
     }
   }
 

@@ -74,10 +74,6 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
 
   Future<void> usuariofenix(String value) async {
     if (value.length == 10) {
-      setState(() {
-        _loading = true;
-      });
-
       final encodedValue = Uri.encodeFull(value);
       final url =
           Uri.parse('${enlace}usuariofenix/buscaralumnocedula/$encodedValue');
@@ -174,6 +170,9 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
           bool confirmado = await mostrarConfirmacion(context);
 
           if (confirmado) {
+            setState(() {
+              _loading = true;
+            });
             try {
               final response = await http.post(
                 Uri.parse('${enlace}register'),
@@ -195,7 +194,9 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
             } catch (error) {
               print(error);
             } finally {
-              // ignore: use_build_context_synchronously
+              setState(() {
+                _loading = false;
+              });
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => HomeGoogleSignIn()),

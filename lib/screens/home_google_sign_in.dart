@@ -43,20 +43,25 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
 
         final cookie = response.headers['set-cookie'];
         cookieacceso = cookie;
-
-        // Hacer algo con la cookie
         print('La cookie es: $cookie');
 
         final decodedToken = JwtDecoder.decode(token);
         final authorities = decodedToken['authorities'];
         print(authorities);
-
-        // ignore: use_build_context_synchronously
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => listaConvocatoria(usuario: usuario)),
-        );
+        if (authorities == 'ROLE_ESTUD') {
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => listaConvocatoria(usuario: usuario)),
+          );
+        } else if (authorities == 'ROLE_TEMP') {
+          print('TUTOR ESPECIFICO');
+        } else if (authorities == 'ROLE_TISTA') {
+          print('TUTOR ACADEMICO');
+        } else if (authorities == 'ROLE_RESPP') {
+          print('RESPONSABLE DE PRACTICAS PPP');
+        }
       } else {
         print('Error: ${response.statusCode}');
         dialogoerror('USUARIO O CONTRASEÑA INCORRECTA', context);
