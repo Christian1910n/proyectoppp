@@ -4,6 +4,7 @@ import 'package:proyectoppp/model/convocatoria.dart';
 import 'package:proyectoppp/model/solicitudEstudiante.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:proyectoppp/screens/detallesEstudiante.dart';
 
 class EstudiantesPostuladosScreen extends StatefulWidget {
   final Convocatoria convocatoria;
@@ -64,19 +65,41 @@ class _EstudiantesPostuladosScreenState
 
           return Column(
             children: [
-              ListTile(
-                title: Text(estudiante.carrera.nombre.toString()),
+              ListTile(     
+                 title: Text(
+                  solicitud.estudiante.usuario.nombre.toString() + ' ' +solicitud.estudiante.usuario.apellido.toString(),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                 
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Estado: ${solicitud.estado ? 'Aprobado' : 'Pendiente'}'),
                     Text('Cedula: ' +solicitud.estudiante.usuario.cedula.toString()),
-                    Text('Nombres: ' +solicitud.estudiante.usuario.nombre.toString()+' '+solicitud.estudiante.usuario.apellido.toString()),
                     Text('Fecha: $fechaInicio'),
+                    Text('Ciclo: ' + estudiante.ciclo),
                   ],
                 ),
-                onTap: () {
-                  // Acciones al seleccionar un estudiante postulado
+                onTap: () async {
+                  final url = Uri.parse(
+                      'http://192.168.1.4:8080/solicitudEstudiante/buscar/${solicitud.id}');
+                  final response = await http.get(url);
+                  if (response.statusCode == 200) {
+                    final responseData = json.decode(response.body);
+                    final estudiantes =
+                        SolicitudEstudiante.fromJson(responseData);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DetallesEstudianteScreen(estudiantes),
+                      ),
+                    );
+                  } else {
+                    print('Error al obtener los detalles del estudiante');
+                  }
                 },
               ),
               Divider(), // Línea divisora
