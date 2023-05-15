@@ -3,7 +3,7 @@ import 'package:proyectoppp/model/convocatoria.dart';
 
 class SolicitudEstudiante {
   final int id;
-  final bool estado;
+  final int estado;
   final DateTime fechaEnvio;
   final Estudiante estudiante;
   final Convocatoria convocatoria;
