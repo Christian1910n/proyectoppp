@@ -4,6 +4,7 @@ import 'package:proyectoppp/model/convocatoria.dart';
 import 'package:proyectoppp/model/solicitudEstudiante.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:proyectoppp/utils/url.dart';
 
 class DetallesEstudianteScreen extends StatefulWidget {
   final SolicitudEstudiante solicitud;
@@ -24,7 +25,7 @@ class _DetallesEstudianteScreenState extends State<DetallesEstudianteScreen> {
         Uri.parse(
             'http://192.168.1.4:8080/solicitudEstudiante/editarEstado/${widget.solicitud.id}?estado=1'),
         headers: {
-          'Content-Type': 'application/json',
+          "Authorization": tokenacceso,
         },
       );
 

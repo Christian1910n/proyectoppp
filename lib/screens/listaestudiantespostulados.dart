@@ -5,6 +5,7 @@ import 'package:proyectoppp/model/solicitudEstudiante.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:proyectoppp/screens/detallesEstudiante.dart';
+import 'package:proyectoppp/utils/url.dart';
 
 class EstudiantesPostuladosScreen extends StatefulWidget {
   final Convocatoria convocatoria;
@@ -28,7 +29,7 @@ class _EstudiantesPostuladosScreenState
 
   void obtenerEstudiantesPostulados() async {
     final url = Uri.parse('http://192.168.1.4:8080/solicitudEstudiante/listarxconvocatoria?id=${widget.convocatoria.id}');
-    final response = await http.get(url);
+    final response = await http.get(url,headers: {"Authorization": tokenacceso});
 
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
@@ -85,7 +86,7 @@ class _EstudiantesPostuladosScreenState
                 onTap: () async {
                   final url = Uri.parse(
                       'http://192.168.1.4:8080/solicitudEstudiante/buscar/${solicitud.id}');
-                  final response = await http.get(url);
+                  final response = await http.get(url, headers: {"Authorization": tokenacceso});
                   if (response.statusCode == 200) {
                     final responseData = json.decode(response.body);
                     final estudiantes =
