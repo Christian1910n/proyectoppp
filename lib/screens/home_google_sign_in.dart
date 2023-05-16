@@ -75,10 +75,18 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => listaConvocatoria(usuario: usuario)),
+                builder: (context) =>
+                    listaConvocatoria(usuario: usuario, rol: authorities)),
           );
         } else if (authorities == 'ROLE_TEMP') {
           print('TUTOR ESPECIFICO');
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    listaConvocatoria(usuario: usuario, rol: authorities)),
+          );
         } else if (authorities == 'ROLE_TISTA') {
           print('TUTOR ACADEMICO');
         } else if (authorities == 'ROLE_RESPP') {

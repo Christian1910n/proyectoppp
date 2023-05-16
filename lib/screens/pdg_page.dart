@@ -493,8 +493,8 @@ class _PdfPageState extends State<PdfPage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          listaConvocatoria(usuario: usuario)),
+                      builder: (context) => listaConvocatoria(
+                          usuario: usuario, rol: 'ROLE_ESTUD')),
                 );
               },
               child: const Text('Regresar al inicio'),

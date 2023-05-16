@@ -28,8 +28,10 @@ class _EstudiantesPostuladosScreenState
   }
 
   void obtenerEstudiantesPostulados() async {
-    final url = Uri.parse('http://192.168.1.4:8080/solicitudEstudiante/listarxconvocatoria?id=${widget.convocatoria.id}');
-    final response = await http.get(url,headers: {"Authorization": tokenacceso});
+    final url = Uri.parse(
+        '${enlace}solicitudEstudiante/listarxconvocatoria?id=${widget.convocatoria.id}');
+    final response =
+        await http.get(url, headers: {"Authorization": tokenacceso});
 
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
@@ -53,60 +55,67 @@ class _EstudiantesPostuladosScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Estudiantes Postulados'),
-      ),
-      body: ListView.builder(
-        itemCount: estudiantesPostulados.length,
-        itemBuilder: (BuildContext context, int index) {
-          final solicitud = estudiantesPostulados[index];
-          final estudiante = solicitud.estudiante;
-          final fechaInicio = DateFormat('dd/MM/yyyy').format(estudiantesPostulados[index].fechaEnvio!);
+    return Theme(
+      data: ThemeData(brightness: Brightness.dark),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Estudiantes Postulados'),
+        ),
+        body: ListView.builder(
+          itemCount: estudiantesPostulados.length,
+          itemBuilder: (BuildContext context, int index) {
+            final solicitud = estudiantesPostulados[index];
+            final estudiante = solicitud.estudiante;
+            final fechaInicio = DateFormat('dd/MM/yyyy')
+                .format(estudiantesPostulados[index].fechaEnvio);
 
-          return Column(
-            children: [
-              ListTile(     
-                 title: Text(
-                  solicitud.estudiante.usuario.nombre.toString() + ' ' +solicitud.estudiante.usuario.apellido.toString(),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+            return Column(
+              children: [
+                ListTile(
+                  title: Text(
+                    solicitud.estudiante.usuario.nombre.toString() +
+                        ' ' +
+                        solicitud.estudiante.usuario.apellido.toString(),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Cedula: ' +
+                          solicitud.estudiante.usuario.cedula.toString()),
+                      Text('Fecha: $fechaInicio'),
+                      Text('Ciclo: ' + estudiante.ciclo),
+                    ],
+                  ),
+                  onTap: () async {
+                    final url = Uri.parse(
+                        '${enlace}solicitudEstudiante/buscar/${solicitud.id}');
+                    final response = await http
+                        .get(url, headers: {"Authorization": tokenacceso});
+                    if (response.statusCode == 200) {
+                      final responseData = json.decode(response.body);
+                      final estudiantes =
+                          SolicitudEstudiante.fromJson(responseData);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DetallesEstudianteScreen(estudiantes),
+                        ),
+                      );
+                    } else {
+                      print('Error al obtener los detalles del estudiante');
+                    }
+                  },
                 ),
-                 
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Cedula: ' +solicitud.estudiante.usuario.cedula.toString()),
-                    Text('Fecha: $fechaInicio'),
-                    Text('Ciclo: ' + estudiante.ciclo),
-                  ],
-                ),
-                onTap: () async {
-                  final url = Uri.parse(
-                      'http://192.168.1.4:8080/solicitudEstudiante/buscar/${solicitud.id}');
-                  final response = await http.get(url, headers: {"Authorization": tokenacceso});
-                  if (response.statusCode == 200) {
-                    final responseData = json.decode(response.body);
-                    final estudiantes =
-                        SolicitudEstudiante.fromJson(responseData);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            DetallesEstudianteScreen(estudiantes),
-                      ),
-                    );
-                  } else {
-                    print('Error al obtener los detalles del estudiante');
-                  }
-                },
-              ),
-              Divider(), // Línea divisora
-            ],
-          );
-        },
+                Divider(), // Línea divisora
+              ],
+            );
+          },
+        ),
       ),
     );
   }

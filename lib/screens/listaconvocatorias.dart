@@ -4,14 +4,16 @@ import 'package:http/http.dart' as http;
 import 'package:proyectoppp/model/convocatoria.dart';
 import 'package:proyectoppp/screens/detalleConvocatoria.dart';
 import 'package:intl/intl.dart';
+import 'package:proyectoppp/screens/listaestudiantespostulados.dart';
 
 import '../model/Usuario.dart';
 import '../utils/url.dart';
 
 class listaConvocatoria extends StatefulWidget {
   final Usuario usuario;
+  final String rol;
 
-  listaConvocatoria({required this.usuario});
+  listaConvocatoria({required this.usuario, required this.rol});
 
   @override
   _listaConvocatoriaState createState() => _listaConvocatoriaState();
@@ -77,7 +79,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
       ),
       child: Scaffold(
         appBar: AppBar(),
-        drawer: MenuEstudiante(usuario, context),
+        drawer: MenuEstudiante(usuario, context, widget.rol),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -135,13 +137,24 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                       ],
                     ),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetallesConvocatoria(
-                              convocatorias[index], usuario),
-                        ),
-                      );
+                      print('ROL:  ${widget.rol}');
+                      if (widget.rol == 'ROLE_ESTUD') {
+                        print('ESTUDIANTE');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetallesConvocatoria(
+                                  convocatorias[index], usuario),
+                            ));
+                      } else if (widget.rol == 'ROLE_TEMP') {
+                        print('TUTOR');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EstudiantesPostuladosScreen(
+                                  convocatorias[index])),
+                        );
+                      }
                     },
                   );
                 },

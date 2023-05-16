@@ -4,8 +4,9 @@ import 'package:proyectoppp/utils/url.dart';
 
 class Perfil extends StatefulWidget {
   final Usuario usuario;
+  final String rol;
 
-  const Perfil({required this.usuario});
+  const Perfil({required this.usuario, required this.rol});
 
   @override
   State<Perfil> createState() => _PerfilState();
@@ -28,7 +29,7 @@ class _PerfilState extends State<Perfil> {
         appBar: AppBar(
           title: const Text('Perfil de Usuario'),
         ),
-        drawer: MenuEstudiante(usuario, context),
+        drawer: MenuEstudiante(usuario, context, widget.rol),
         body: Container(
           color: Colors.grey[900],
           padding: const EdgeInsets.all(16),

@@ -4,6 +4,7 @@ import 'package:proyectoppp/screens/carrusel.dart';
 import 'package:proyectoppp/screens/listaconvocatorias.dart';
 
 import '../model/Usuario.dart';
+import '../screens/DetallePractica.dart';
 import '../screens/Perfil.dart';
 
 String enlace = "http://192.168.68.110:8080/";
@@ -64,7 +65,8 @@ bool validatePassword(String password) {
   return passwordRegExp.hasMatch(password);
 }
 
-Container MenuEstudiante(Usuario usuario, BuildContext context) {
+Container MenuTutorResponsablePPP(
+    Usuario usuario, BuildContext context, String rol) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(color: Colors.blue),
@@ -128,7 +130,7 @@ Container MenuEstudiante(Usuario usuario, BuildContext context) {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              listaConvocatoria(usuario: usuario)),
+                              listaConvocatoria(usuario: usuario, rol: rol)),
                     );
                   },
                 ),
@@ -150,7 +152,153 @@ Container MenuEstudiante(Usuario usuario, BuildContext context) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Perfil(usuario: usuario)),
+                          builder: (context) =>
+                              Perfil(usuario: usuario, rol: rol)),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            title: const Text(
+              'CERRAR SESIÓN',
+              style: TextStyle(
+                color: Colors.blue,
+                fontFamily: 'papyrus',
+                fontSize: 15,
+              ),
+            ),
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            tileColor: Colors.black,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Carrusel()),
+              );
+              tokenacceso = '';
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Container MenuEstudiante(Usuario usuario, BuildContext context, String rol) {
+  return Container(
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.blue),
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    child: Drawer(
+      backgroundColor: Colors.black,
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 48, 4, 56),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 80.0,
+                        child: Image.network(
+                          'http://dev2020.tecazuay.edu.ec/wp-content/uploads/2022/11/cropped-LOGO-RECTANGULAR_SIN-FONDO.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20.0),
+                        child: Text(
+                          '${usuario.nombre} ${usuario.apellido}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'papyrus',
+                            fontSize: 10.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                ListTile(
+                  title: const Text(
+                    'CONVOCATORIAS',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontFamily: 'papyrus',
+                      fontSize: 15,
+                    ),
+                  ),
+                  leading: const Icon(
+                    Icons.notifications,
+                    color: Colors.white,
+                  ),
+                  tileColor: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              listaConvocatoria(usuario: usuario, rol: rol)),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: const Text(
+                    'MI PRACTICA',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontFamily: 'papyrus',
+                      fontSize: 15,
+                    ),
+                  ),
+                  leading: const Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                  ),
+                  tileColor: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DetallePractica(usuario: usuario)),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: const Text(
+                    'MI PERFIL',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontFamily: 'papyrus',
+                      fontSize: 15,
+                    ),
+                  ),
+                  leading: const Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                  ),
+                  tileColor: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              Perfil(usuario: usuario, rol: rol)),
                     );
                   },
                 ),
