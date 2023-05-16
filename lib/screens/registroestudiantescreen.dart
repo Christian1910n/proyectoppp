@@ -39,6 +39,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
   String? contra = '';
   String? rcontra = '';
   int? idcarre = 0;
+  String _cicloValue = '1';
 
   List<Carrera> carreras = [];
 
@@ -60,7 +61,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
         activo: true,
         password: '');
 
-    _carrera = Carrera(id: 1, activo: false, idCarrera: 0, nombre: '');
+    _carrera = Carrera(id: 0, activo: false, idCarrera: 0, nombre: '');
     _estudiante = Estudiante(
         id: 0,
         periodo: '',
@@ -74,6 +75,9 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
 
   Future<void> usuariofenix(String value) async {
     if (value.length == 10) {
+      setState(() {
+        _loading = true;
+      });
       final encodedValue = Uri.encodeFull(value);
       final url =
           Uri.parse('${enlace}usuariofenix/buscaralumnocedula/$encodedValue');
@@ -99,7 +103,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
 
             _cnombres.text = _usuarioFenix.nombres;
             _capellidos.text = _usuarioFenix.apellidos;
-            _cciclo.text = '${_usuarioFenix.ciclo}° Ciclo';
+            _cciclo.text = '${_usuarioFenix.ciclo}';
             _ccorreo.text = _usuarioFenix.correo;
             _ctelefono.text = _usuarioFenix.telefono;
             _cperiodo.text = _usuarioFenix.periodo;
@@ -111,11 +115,13 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
             _estudiante.usuario.cedula = _usuarioFenix.cedula;
             _estudiante.usuario.telefono = _usuarioFenix.telefono;
             _estudiante.ciclo = _usuarioFenix.ciclo.toString();
+            _cicloValue = _usuarioFenix.ciclo.toString();
             _estudiante.periodo = _usuarioFenix.periodo;
             _estudiante.idEstudiante = _usuarioFenix.alumno_docenteId;
             _habilitar = false;
-            //carreraSeleccionada = carreras.firstWhere(
-            //  (carrera) => carrera.idCarrera == _usuarioFenix.carreraId);
+
+            carreraSeleccionada = carreras.firstWhere(
+                (carrera) => carrera.idCarrera == _usuarioFenix.carreraId);
 
             //_textController.text = carreraSeleccionada!.nombre;
           });
@@ -138,6 +144,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
         if (mounted) {
           setState(() {
             _loading = false;
+            _estudiante.carrera = carreraSeleccionada!;
           });
         }
       }
@@ -155,6 +162,9 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
   }
 
   Future<void> registrarestudiante() async {
+    print(_estudiante.carrera.id);
+    print(carreraSeleccionada!.id);
+
     if (validatePassword(_estudiante.usuario.password!)) {
       if (contra == rcontra) {
         if (_estudiante.usuario.cedula != '' &&
@@ -349,18 +359,51 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                   },
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  controller: _cciclo,
-                  style: const TextStyle(color: Colors.white),
+                DropdownButtonFormField<String>(
+                  dropdownColor: Colors.blue,
+                  value: _cicloValue,
+                  items: [
+                    DropdownMenuItem(
+                      child: Text('1', style: TextStyle(color: Colors.white)),
+                      value: '1',
+                      enabled: !_habilitar,
+                    ),
+                    DropdownMenuItem(
+                      child: Text('2', style: TextStyle(color: Colors.white)),
+                      value: '2',
+                      enabled: !_habilitar,
+                    ),
+                    DropdownMenuItem(
+                      child: Text('3', style: TextStyle(color: Colors.white)),
+                      value: '3',
+                      enabled: !_habilitar,
+                    ),
+                    DropdownMenuItem(
+                      child: Text('4', style: TextStyle(color: Colors.white)),
+                      value: '4',
+                      enabled: !_habilitar,
+                    ),
+                    DropdownMenuItem(
+                      child: Text('5', style: TextStyle(color: Colors.white)),
+                      value: '5',
+                      enabled: !_habilitar,
+                    ),
+                    DropdownMenuItem(
+                      child: Text('Egresado',
+                          style: TextStyle(color: Colors.white)),
+                      value: '0',
+                      enabled: !_habilitar,
+                    ),
+                  ],
                   decoration: const InputDecoration(
                     labelText: 'Ciclo Academico',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
-                  enabled: !_habilitar,
                   onChanged: (value) {
                     setState(() {
-                      _estudiante.ciclo = value;
+                      _estudiante.ciclo = value!;
+                      _cicloValue = value;
                     });
                   },
                 ),
@@ -377,39 +420,6 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                   onChanged: (value) {
                     setState(() {
                       _estudiante.periodo = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 20),
-                TypeAheadFormField<Carrera>(
-                  enabled: true,
-                  textFieldConfiguration: TextFieldConfiguration(
-                    decoration: const InputDecoration(
-                      labelText: 'Carrera',
-                      labelStyle: TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(),
-                    ),
-                    style: TextStyle(color: Colors.white),
-                    controller: _textController,
-                  ),
-                  suggestionsCallback: (pattern) async {
-                    return carreras
-                        .where((carrera) => carrera.nombre!
-                            .toLowerCase()
-                            .contains(pattern.toLowerCase()))
-                        .toList();
-                  },
-                  itemBuilder: (context, Carrera suggestion) {
-                    return ListTile(
-                        title: Text(
-                      suggestion.nombre!,
-                    ));
-                  },
-                  onSuggestionSelected: (Carrera suggestion) {
-                    setState(() {
-                      carreraSeleccionada = suggestion;
-                      _estudiante.carrera.id = suggestion.idCarrera;
-                      _textController.text = suggestion.nombre!;
                     });
                   },
                 ),
