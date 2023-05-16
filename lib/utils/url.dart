@@ -100,9 +100,9 @@ Container MenuEstudiante(Usuario usuario, BuildContext context) {
                         child: Text(
                           '${usuario.nombre} ${usuario.apellido}',
                           style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.white,
                             fontFamily: 'papyrus',
-                            fontSize: 14.0,
+                            fontSize: 10.0,
                           ),
                         ),
                       ),
