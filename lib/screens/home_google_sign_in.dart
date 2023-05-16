@@ -9,6 +9,7 @@ import 'package:proyectoppp/model/logindata.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proyectoppp/screens/listaconvocatorias.dart';
 
+import '../sqlite/database.dart';
 import '../utils/url.dart';
 
 class HomeGoogleSignIn extends StatefulWidget {
@@ -20,13 +21,34 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   late LoginData _loginData;
   bool _showPassword = false;
   bool _loading = false;
+  bool recordar = false;
+  final TextEditingController _correo = TextEditingController();
+  final TextEditingController _contra = TextEditingController();
+
+  void _cargarcredenciales() async {
+    // Verifica si se han almacenado las credenciales del usuario en la base de datos
+    Map? credentials =
+        await DatabaseHelper.instance.getCredentials(_correo.text);
+
+    if (credentials != null) {
+      // Si se han almacenado las credenciales, completa automáticamente los campos de nombre de usuario y contraseña
+      _correo.text = credentials[DatabaseHelper.columnName];
+      _contra.text = credentials[DatabaseHelper.columnPassword];
+      recordar = true;
+    }
+  }
 
   Future<void> login() async {
     setState(() {
       _loading = true;
     });
     try {
-      final auth =
+      if (recordar) {
+        await DatabaseHelper.instance
+            .insertOrUpdateCredentials(_loginData.usuario, _loginData.contra);
+      }
+
+      /*final auth =
           'Basic ${base64Encode(utf8.encode('${_loginData.usuario}:${_loginData.contra}'))}';
 
       final url = '${enlace}ingresar';
@@ -66,7 +88,8 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
         print('Error: ${response.statusCode}');
         dialogoerror('USUARIO O CONTRASEÑA INCORRECTA', context);
       }
-      print(response.body);
+
+      print(response.body);*/
     } catch (error) {
       print(error);
     } finally {
@@ -82,6 +105,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   void initState() {
     super.initState();
     _loginData = LoginData(usuario: '', contra: '');
+    _cargarcredenciales();
   }
 
   @override
@@ -123,6 +147,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
               ),
               TextField(
                 enableInteractiveSelection: false,
+                controller: _correo,
                 decoration: InputDecoration(
                     hintText: 'USUARIO',
                     labelText: 'USUARIO',
@@ -131,6 +156,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                         borderRadius: BorderRadius.circular(20.0))),
                 style: const TextStyle(color: Colors.white),
                 onChanged: (valor) {
+                  _cargarcredenciales();
                   setState(() {
                     _loginData.usuario = valor;
                   });
@@ -142,6 +168,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
               TextField(
                 enableInteractiveSelection: false,
                 obscureText: !_showPassword,
+                controller: _contra,
                 decoration: InputDecoration(
                     hintText: 'Password',
                     labelText: 'Password',
@@ -166,6 +193,23 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
               ),
               const Divider(
                 height: 15.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Checkbox(
+                    value: recordar,
+                    onChanged: (value) {
+                      setState(() {
+                        recordar = value!;
+                      });
+                    },
+                  ),
+                  const Text(
+                    'Recordar contraseña',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
               ),
               SizedBox(
                 width: double.infinity,
