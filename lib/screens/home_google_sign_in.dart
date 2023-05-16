@@ -48,8 +48,8 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
             .insertOrUpdateCredentials(_loginData.usuario, _loginData.contra);
       }
 
-      /*final auth =
-          'Basic ${base64Encode(utf8.encode('${_loginData.usuario}:${_loginData.contra}'))}';
+      final auth =
+          'Basic ${base64Encode(utf8.encode('${_correo.text}:${_contra.text}'))}';
 
       final url = '${enlace}ingresar';
       final response =
@@ -89,7 +89,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
         dialogoerror('USUARIO O CONTRASEÑA INCORRECTA', context);
       }
 
-      print(response.body);*/
+      print(response.body);
     } catch (error) {
       print(error);
     } finally {
