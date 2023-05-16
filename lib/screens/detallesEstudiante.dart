@@ -21,13 +21,8 @@ class _DetallesEstudianteScreenState extends State<DetallesEstudianteScreen> {
 
   void _updateSolicitudEstudiante(bool newValue) async {
     if (isChecked) {
-      final response = await http.put(
-        Uri.parse(
-            'http://192.168.1.4:8080/solicitudEstudiante/editarEstado/${widget.solicitud.id}?estado=1'),
-        headers: {
-          "Authorization": tokenacceso,
-        },
-      );
+      final url = Uri.parse('http://192.168.1.4:8080/solicitudEstudiante/editarEstado/${widget.solicitud.id}?estado=1');
+      final response = await http.put(url, headers: {"Authorization": tokenacceso});
 
       if (response.statusCode == 201) {
         final responseData = json.decode(response.body);
@@ -37,6 +32,7 @@ class _DetallesEstudianteScreenState extends State<DetallesEstudianteScreen> {
         final responseData = json.decode(response.body);
         print('Error al actualizar la solicitud');
         print(response.statusCode);
+        print(tokenacceso);
       }
     }
   }
