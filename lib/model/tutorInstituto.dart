@@ -2,7 +2,7 @@ import 'package:proyectoppp/model/Usuario.dart';
 
 class TutorInstituto {
   int? id;
-  String? idDocente;
+  int? idDocente;
   Usuario? usuario;
 
   TutorInstituto({this.id, this.idDocente, this.usuario});

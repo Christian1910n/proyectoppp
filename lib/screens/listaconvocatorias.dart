@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyectoppp/model/convocatoria.dart';
+import 'package:proyectoppp/model/estudiante.dart';
 import 'package:proyectoppp/screens/detalleConvocatoria.dart';
 import 'package:intl/intl.dart';
 import 'package:proyectoppp/screens/listaestudiantespostulados.dart';
@@ -26,20 +27,63 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
   @override
   void initState() {
     usuario = widget.usuario;
+
     super.initState();
-    listarconvocatorias();
-    print('hola $tokenacceso');
+    if (widget.rol == 'ROLE_ESTUD') {
+      buscarestudiante();
+    } else {
+      responsableppp();
+    }
+    // listarconvocatorias();
   }
 
-  void listarconvocatorias() async {
-    final url = Uri.parse('${enlace}convocatoria/listar');
+  Future<void> buscarestudiante() async {
+    final url = Uri.parse('${enlace}estudiante/buscarxusuario/${usuario.id}');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {"Authorization": tokenacceso},
+      );
+
+      if (response.statusCode == 200) {
+        final estudianteJson = response.body;
+        estudianteback = Estudiante.fromJson(jsonDecode(estudianteJson));
+        print(estudianteJson);
+        if (estudianteback!.ciclo == '5') {
+          ciclo = 'del quinto ciclo';
+        } else if (estudianteback!.ciclo == '4') {
+          ciclo = 'del cuarto ciclo';
+        } else if (estudianteback!.ciclo == '3') {
+          ciclo = 'del tercer ciclo';
+        } else if (estudianteback!.ciclo == '2') {
+          ciclo = 'del segundo ciclo';
+        } else if (estudianteback!.ciclo == '1') {
+          ciclo = 'del primer ciclo';
+        } else if (estudianteback!.ciclo == '0') {
+          ciclo = 'egresado';
+        }
+
+        periodo = estudianteback!.periodo;
+        carreraestudiante = toTitleCase(estudianteback!.carrera.nombre!);
+      } else {
+        print('Error en la solicitud: ${response.statusCode}');
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      listarconvocatoriasestudiante();
+    }
+  }
+
+  void listarconvocatoriasestudiante() async {
+    final url = Uri.parse(
+        '${enlace}convocatoria/convocatoriasactivas?idCarrera=${estudianteback!.carrera.id}');
+    print(url);
     List<Convocatoria> convocatoriass = [];
 
     try {
-      final token = tokenacceso; // reemplaza con tu token
-      final cookie = cookieacceso;
-      print('Hola token $tokenacceso');
-      print('Hola cookie> $cookie'); // reemplaza con tu cookie
+      final token = tokenacceso;
       final response = await http.get(
         url,
         headers: {"Authorization": token},
@@ -63,12 +107,64 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
         }
       }
     } catch (error) {
-      print(error);
+      print('Error Lista Convocatorias> $error');
+    }
+  }
+
+  void responsableppp() async {
+    final url = Uri.parse('${enlace}convocatoria/listar');
+    print(url);
+    List<Convocatoria> convocatoriass = [];
+
+    try {
+      final token = tokenacceso;
+      final response = await http.get(
+        url,
+        headers: {"Authorization": token},
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonResponse = json.decode(response.body);
+        print(response.body);
+        for (dynamic convocatoriaJson in jsonResponse) {
+          Convocatoria convocatoria = Convocatoria.fromJson(convocatoriaJson);
+          if (convocatoria.solicitudEmpresa?.convenio != null) {
+            String empresaNombre =
+                convocatoria.solicitudEmpresa!.convenio!.empresa?.nombre ?? "";
+            convocatoria.solicitudEmpresa!.convenio!.empresa?.nombre =
+                empresaNombre;
+          }
+          convocatoriass.add(convocatoria);
+          setState(() {
+            convocatorias = convocatoriass;
+          });
+        }
+      }
+    } catch (error) {
+      print('Error Lista Convocatorias> $error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (convocatorias.isEmpty) {
+      return Theme(
+        data: ThemeData(brightness: Brightness.dark),
+        child: Scaffold(
+          appBar: AppBar(),
+          drawer: MenuEstudiante(usuario, context, widget.rol),
+          body: const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(
+                child: Text(
+                  'NO HAY CONVOCATORIAS DISPONIBLES VUELVE PRONTO',
+                  style: TextStyle(fontSize: 18),
+                ),
+              )),
+        ),
+      );
+    }
+
     return Theme(
       data: ThemeData(
         brightness: Brightness.dark,
@@ -146,8 +242,7 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
                               builder: (context) => DetallesConvocatoria(
                                   convocatorias[index], usuario),
                             ));
-                      } else if (widget.rol == 'ROLE_TEMP') {
-                        print('TUTOR');
+                      } else {
                         Navigator.push(
                           context,
                           MaterialPageRoute(

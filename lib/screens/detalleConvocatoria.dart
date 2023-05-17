@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:proyectoppp/model/Usuario.dart';
 import 'package:proyectoppp/model/actividad.dart';
 import 'package:proyectoppp/model/convocatoria.dart';
+import 'package:proyectoppp/model/estudiante.dart';
 import 'package:proyectoppp/screens/pdg_page.dart';
 import 'package:proyectoppp/utils/url.dart';
 import 'package:intl/date_symbol_data_local.dart';

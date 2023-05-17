@@ -268,10 +268,10 @@ packages:
     dependency: "direct main"
     description:
       name: googleapis
-      sha256: "993a7a5440b2dbe1a3c143ec43c4c0e79b35be6ae83fabb2c38ba938594f8c3c"
+      sha256: d02ede69d06f408ed929c615cafeb96fabb2a836432e0a576f96157aafa96278
       url: "https://pub.dev"
     source: hosted
-    version: "11.0.0"
+    version: "11.1.0"
   googleapis_auth:
     dependency: "direct main"
     description:
@@ -444,10 +444,10 @@ packages:
     dependency: "direct main"
     description:
       name: pdf
-      sha256: "02bd438bbd1aa952c1070c8df3905ab3b6f0c6112a8266f5e8601ab1a4b9164f"
+      sha256: "70d84154dc5b6ddf28eee6c012510a4cbbebb3a1879c0957e05364a95e8f3832"
       url: "https://pub.dev"
     source: hosted
-    version: "3.10.2"
+    version: "3.10.3"
   pdf_widget_wrapper:
     dependency: transitive
     description:
@@ -537,10 +537,10 @@ packages:
     dependency: "direct main"
     description:
       name: sqflite
-      sha256: "3a82c9a216b46b88617e3714dd74227eaca20c501c4abcc213e56db26b9caa00"
+      sha256: b4d6710e1200e96845747e37338ea8a819a12b51689a3bcf31eff0003b37a0b9
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.8+2"
+    version: "2.2.8+4"
   sqflite_common:
     dependency: transitive
     description:

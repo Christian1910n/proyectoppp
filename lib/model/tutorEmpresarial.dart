@@ -3,15 +3,22 @@ import 'package:proyectoppp/model/empresa.dart';
 
 class TutorEmpresarial {
   final int id;
-  final int rol;
   final String cargo;
   final Empresa empresa;
   final Usuario usuario;
 
   TutorEmpresarial(
       {required this.id,
-      required this.rol,
       required this.cargo,
       required this.empresa,
       required this.usuario});
+
+  factory TutorEmpresarial.fromJson(Map<String, dynamic> json) {
+    return TutorEmpresarial(
+      id: json['id'],
+      cargo: json['cargo'],
+      empresa: Empresa.fromJson(json['empresa']),
+      usuario: Usuario.fromJson(json['usuario']),
+    );
+  }
 }

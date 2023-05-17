@@ -10,10 +10,7 @@ import 'package:pdf/widgets.dart' as pw;
 
 //Variables documento
 
-const String ciclo = "egresado";
 //const String ciclo = "del quinto ciclo";
-
-const String periodo = "Noviembre 2022 - Marzo 2023 ";
 
 Future<void> saveAsFile(
   final BuildContext context,

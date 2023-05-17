@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:printing/printing.dart';
@@ -6,7 +7,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:proyectoppp/model/Usuario.dart';
 import 'package:proyectoppp/screens/listaconvocatorias.dart';
 import 'package:proyectoppp/utils/pdfconvocatoria.dart';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:proyectoppp/utils/url.dart';
@@ -393,6 +393,7 @@ class _PdfPageState extends State<PdfPage> {
 
   @override
   void initState() {
+    print('ciclo es: $ciclo');
     _convocatoria = widget.convocatoria;
     usuario = widget.usuario;
 
@@ -423,8 +424,9 @@ class _PdfPageState extends State<PdfPage> {
     String nfirma = '${usuario.nombre} ${usuario.apellido}';
     List<String> nombress = nfirma.split(' ');
     String primerNombre = nombress[0];
-    String primerApellido = nombress[nombress.length - 1];
+    String primerApellido = nombress[nombress.length - 2];
     String nombreCompleto = '$primerNombre $primerApellido';
+    print('El nombre es: $nombreCompleto');
     nyapellido = '$primerNombre $primerApellido';
 
     celular = usuario.telefono!;
@@ -432,8 +434,11 @@ class _PdfPageState extends State<PdfPage> {
     correo = usuario.correo!;
 
     bodyText1 =
-        "Por medio de la presente, Yo, $nombres, con número de cédula ${usuario.cedula}, estudiante $ciclo del periodo académico $periodo de la carrera de Tecnología Superior en Desarrollo de Software, solicito comedidamente se autorice mi postulación para realizar las 240 horas de prácticas pre profesionales en la empresa ${_convocatoria?.solicitudEmpresa!.convenio!.empresa!.nombre} según solicitud: $_nroconvocatoria";
+        "Por medio de la presente, Yo, $nombres, con número de cédula ${usuario.cedula}, estudiante $ciclo del periodo académico $periodo de la carrera de $carreraestudiante, solicito comedidamente se autorice mi postulación para realizar las 240 horas de prácticas pre profesionales en la empresa ${_convocatoria?.solicitudEmpresa!.convenio!.empresa!.nombre} según solicitud: $_nroconvocatoria";
 
+    //estudiante!.ciclo;
+    periodo = '';
+    //estudiante!.periodo;
     super.initState();
   }
 

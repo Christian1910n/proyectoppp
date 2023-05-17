@@ -11,6 +11,7 @@ class Practica {
   final DateTime fin;
   final String concluciones;
   final String departamento;
+  final int estado;
   final Convocatoria convocatoria;
   final Estudiante estudiante;
   final TutorInstituto tutorInstituto;
@@ -24,8 +25,26 @@ class Practica {
       required this.fin,
       required this.concluciones,
       required this.departamento,
+      required this.estado,
       required this.convocatoria,
       required this.estudiante,
       required this.tutorInstituto,
       required this.tutorEmpresarial});
+
+  factory Practica.fromJson(Map<String, dynamic> json) {
+    return Practica(
+      id: json['id'],
+      periodo: json['periodo'],
+      nSemanas: json['nsemanas'],
+      inicio: DateTime.parse(json['inicio']),
+      fin: DateTime.parse(json['fin']),
+      concluciones: json['concluciones'],
+      departamento: json['departamento'],
+      estado: json['estado'],
+      convocatoria: Convocatoria.fromJson(json['convocatoria']),
+      estudiante: Estudiante.fromJson(json['estudiante']),
+      tutorInstituto: TutorInstituto.fromJson(json['tutorInstituto']),
+      tutorEmpresarial: TutorEmpresarial.fromJson(json['tutorEmpresarial']),
+    );
+  }
 }

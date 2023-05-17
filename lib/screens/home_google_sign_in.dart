@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:proyectoppp/model/Usuario.dart';
 import 'package:proyectoppp/screens/carrusel.dart';
@@ -39,13 +40,14 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   }
 
   Future<void> login() async {
+    await initializeDateFormatting('es_ES');
     setState(() {
       _loading = true;
     });
     try {
       if (recordar) {
         await DatabaseHelper.instance
-            .insertOrUpdateCredentials(_loginData.usuario, _loginData.contra);
+            .insertOrUpdateCredentials(_loginData.usuario, _contra.text);
       }
 
       final auth =
