@@ -19,6 +19,14 @@ String ciclo = "";
 String periodo = "";
 String carreraestudiante = "";
 
+int calcularTotalHoras(TimeOfDay horaInicio, TimeOfDay horaFin) {
+  final int inicioMinutos = horaInicio.hour * 60 + horaInicio.minute;
+  final int finMinutos = horaFin.hour * 60 + horaFin.minute;
+  final int totalMinutos = finMinutos - inicioMinutos;
+  final int totalHoras = totalMinutos ~/ 60;
+  return totalHoras;
+}
+
 Future<dynamic> dialogoerror(mensaje, BuildContext context) {
   return showDialog(
     context: context,

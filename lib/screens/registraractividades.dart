@@ -1,24 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:proyectoppp/model/practica.dart';
+import 'package:proyectoppp/utils/url.dart';
+import 'package:http/http.dart' as http;
+
+import '../model/semanaActividad.dart';
 
 class RegistrarActividad extends StatefulWidget {
-  const RegistrarActividad({super.key});
+  final Practica practica;
+
+  const RegistrarActividad({required this.practica});
 
   @override
   State<RegistrarActividad> createState() => _RegistrarActividadState();
-}
-
-class Activity {
-  DateTime date;
-  TimeOfDay entryTime;
-  TimeOfDay exitTime;
-  String description;
-
-  Activity({
-    required this.date,
-    required this.entryTime,
-    required this.exitTime,
-    required this.description,
-  });
 }
 
 class _RegistrarActividadState extends State<RegistrarActividad> {
@@ -27,6 +23,8 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
   TimeOfDay _selectedEntryTime = TimeOfDay.now();
   TimeOfDay _selectedExitTime = TimeOfDay.now();
   String _description = '';
+  bool _loading = false;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -66,31 +64,86 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
     }
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // Create an instance of Activity using the form data
-      Activity newActivity = Activity(
-        date: _selectedDate,
-        entryTime: _selectedEntryTime,
-        exitTime: _selectedExitTime,
-        description: _description,
-      );
+      int totalHoras =
+          calcularTotalHoras(_selectedEntryTime, _selectedExitTime);
 
-      // Process the new activity (e.g., save to a database)
-      // ...
+      if (totalHoras > 0) {
+        setState(() {
+          _loading = true;
+        });
+        SemanaActividad semanaActividad = SemanaActividad(
+          id: 0,
+          dia: _selectedDate,
+          horaInicio: _selectedEntryTime,
+          horaFin: _selectedExitTime,
+          totalHoras: totalHoras,
+          actividad: _description,
+          practica: widget.practica,
+        );
+        try {
+          String requestBody = jsonEncode(semanaActividad);
+          print(requestBody);
+          Map<String, String> headers = {
+            'Content-Type': 'application/json',
+            "Authorization": tokenacceso
+          };
 
-      // Show a success message or navigate to another screen
-      // ...
+          var response = await http.post(
+            Uri.parse('${enlace}semanaActividad/crear'),
+            headers: headers,
+            body: requestBody,
+          );
+
+          if (response.statusCode == 201) {
+            var responseData = jsonDecode(response.body);
+            print(responseData);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('La actividad se ha registrado con éxito.'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+          } else {
+            print('Error Post SActividad: ${response.statusCode}');
+          }
+        } catch (e) {
+          print('Error: $e');
+        } finally {
+          if (mounted) {
+            setState(() {
+              _loading = false;
+            });
+          }
+        }
+      } else {
+        dialogoerror(
+            'LA HORA FINAL NO PUEDE SER MENOR A LA HORA DE INICIO', context);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return Center(
+        child: Stack(
+          children: [
+            Lottie.network(
+                'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),
+
+            //child: Lottie.asset('assets/loading.json'),
+          ],
+        ),
+      );
+    }
     return Theme(
       data: ThemeData(brightness: Brightness.dark),
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text('Registro de Actividad'),
         ),

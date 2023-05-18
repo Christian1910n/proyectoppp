@@ -30,14 +30,16 @@ class Empresa {
       vision: (json['vision']),
     );
   }
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'ruc': ruc,
-        'nombre': nombre,
-        'matriz': matriz,
-        'mision': mision,
-        'activo': activo,
-        'objetivo': objetivo,
-        'vision': vision,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'ruc': ruc,
+      'nombre': nombre,
+      'matriz': matriz,
+      'mision': mision,
+      'vision': vision,
+      'objetivo': objetivo,
+      'activo': activo,
+    };
+  }
 }

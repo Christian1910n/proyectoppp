@@ -47,4 +47,21 @@ class Practica {
       tutorEmpresarial: TutorEmpresarial.fromJson(json['tutorEmpresarial']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'periodo': periodo,
+      'nSemanas': nSemanas,
+      'inicio': inicio.toIso8601String(),
+      'fin': fin.toIso8601String(),
+      'concluciones': concluciones,
+      'departamento': departamento,
+      'estado': estado,
+      'convocatoria': convocatoria.toJson(),
+      'estudiante': estudiante.toJson(),
+      'tutorInstituto': tutorInstituto.toJson(),
+      'tutorEmpresarial': tutorEmpresarial.toJson(),
+    };
+  }
 }

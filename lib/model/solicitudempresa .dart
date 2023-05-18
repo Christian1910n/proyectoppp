@@ -31,13 +31,15 @@ class SolicitudEmpresa {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'numPracticantes': numPracticantes,
-        'numHoras': numHoras,
-        'fechaInicioTen': fechaInicioTen,
-        'fechaMaxTen': fechaMaxTen,
-        'estado': estado,
-        'convenio': convenio,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'numPracticantes': numPracticantes,
+      'numHoras': numHoras,
+      'fechaInicioTen': fechaInicioTen?.toIso8601String(),
+      'fechaMaxTen': fechaMaxTen?.toIso8601String(),
+      'estado': estado,
+      'convenio': convenio?.toJson(),
+    };
+  }
 }

@@ -24,11 +24,13 @@ class Convocatoria {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'numero': numero,
-        'fechaInicio': fechaInicio,
-        'fechaFin': fechaFin,
-        'solicitudEmpresa': solicitudEmpresa,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'fechaInicio': fechaInicio?.toIso8601String(),
+      'fechaFin': fechaFin?.toIso8601String(),
+      'numero': numero,
+      'solicitudEmpresa': solicitudEmpresa?.toJson(),
+    };
+  }
 }

@@ -32,13 +32,15 @@ class Convenio {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'numero': numero,
-        'fechaInicio': fechaInicio,
-        'fechaFin': fechaFin,
-        'empresa': empresa,
-        'carrera': carrera,
-        'firmaInst': firmaInst,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'numero': numero,
+      'fechaInicio': fechaInicio?.toIso8601String(),
+      'fechaFin': fechaFin?.toIso8601String(),
+      'empresa': empresa?.toJson(),
+      'carrera': carrera?.toJson(),
+      'firmaInst': firmaInst?.toJson(),
+    };
+  }
 }

@@ -21,4 +21,13 @@ class TutorEmpresarial {
       usuario: Usuario.fromJson(json['usuario']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'cargo': cargo,
+      'empresa': empresa.toJson(),
+      'usuario': usuario.toJson(),
+    };
+  }
 }

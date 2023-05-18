@@ -153,7 +153,8 @@ class _DetallePracticaState extends State<DetallePractica> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const RegistrarActividad(),
+                              builder: (context) =>
+                                  RegistrarActividad(practica: practica),
                             ),
                           );
                         },
