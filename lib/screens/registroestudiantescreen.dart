@@ -142,10 +142,16 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
         }
       } finally {
         if (mounted) {
-          setState(() {
-            _loading = false;
-            _estudiante.carrera = carreraSeleccionada!;
-          });
+          try {
+            setState(() {
+              _loading = false;
+              _estudiante.carrera = carreraSeleccionada!;
+            });
+          } catch (error) {
+            setState(() {
+              _loading = false;
+            });
+          }
         }
       }
     } else {

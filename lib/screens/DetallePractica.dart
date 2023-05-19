@@ -83,85 +83,135 @@ class _DetallePracticaState extends State<DetallePractica> {
         } else {
           final practica = snapshot.data!;
           return Theme(
-            data: ThemeData(
-              brightness: Brightness.dark,
-            ),
-            child: Center(
-              child: Scaffold(
-                appBar: AppBar(
-                  title: const Text('Detalle de la práctica'),
+            data: ThemeData(brightness: Brightness.dark),
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  'Detalle de la práctica',
+                  style: TextStyle(
+                      fontFamily: 'Roboto', fontWeight: FontWeight.bold),
                 ),
-                drawer: MenuEstudiante(widget.usuario, context, 'ROLE_ESTUD'),
-                body: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Fecha de inicio:',
-                        style: TextStyle(fontSize: 25, fontFamily: 'papyrus'),
-                      ),
-                      Text(
-                        dateFormat.format(practica.inicio),
-                        style: const TextStyle(
-                            fontSize: 25, fontFamily: 'papyrus'),
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Fecha final tentativa:',
-                        style: TextStyle(fontSize: 25, fontFamily: 'papyrus'),
-                      ),
-                      Text(
-                        dateFormat.format(practica.fin),
-                        style: const TextStyle(
-                            fontSize: 25, fontFamily: 'papyrus'),
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Empresa:',
-                        style: TextStyle(fontSize: 25, fontFamily: 'papyrus'),
-                      ),
-                      Text(
-                        practica.convocatoria.solicitudEmpresa!.convenio!
-                            .empresa!.nombre!,
-                        style: const TextStyle(
-                            fontSize: 25, fontFamily: 'papyrus'),
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Tutor Específico:',
-                        style: TextStyle(fontSize: 25, fontFamily: 'papyrus'),
-                      ),
-                      Text(
-                        '${practica.tutorEmpresarial.usuario.nombre} ${practica.tutorEmpresarial.usuario.apellido}',
-                        style: const TextStyle(
-                            fontSize: 15, fontFamily: 'papyrus'),
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Tutor Académico:',
-                        style: TextStyle(fontSize: 25, fontFamily: 'papyrus'),
-                      ),
-                      Text(
-                        '${practica.tutorInstituto.usuario!.nombre} ${practica.tutorInstituto.usuario!.apellido}',
-                        style: const TextStyle(
-                            fontSize: 16, fontFamily: 'papyrus'),
-                      ),
-                      const SizedBox(height: 32),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  RegistrarActividad(practica: practica),
-                            ),
-                          );
-                        },
-                        child: const Text('Registrar asistencia'),
-                      ),
-                    ],
-                  ),
+              ),
+              drawer: MenuEstudiante(widget.usuario, context, 'ROLE_ESTUD'),
+              body: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Fecha de inicio:',
+                          style: TextStyle(fontSize: 20, fontFamily: 'Roboto'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      dateFormat.format(practica.inicio),
+                      style:
+                          const TextStyle(fontSize: 25, fontFamily: 'Roboto'),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Fecha final tentativa:',
+                          style: TextStyle(fontSize: 20, fontFamily: 'Roboto'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      dateFormat.format(practica.fin),
+                      style:
+                          const TextStyle(fontSize: 25, fontFamily: 'Roboto'),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.business,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Empresa:',
+                          style: TextStyle(fontSize: 20, fontFamily: 'Roboto'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      practica.convocatoria.solicitudEmpresa!.convenio!.empresa!
+                          .nombre!,
+                      style:
+                          const TextStyle(fontSize: 25, fontFamily: 'Roboto'),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Tutor Específico:',
+                          style: TextStyle(fontSize: 20, fontFamily: 'Roboto'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      '${practica.tutorEmpresarial.usuario.nombre} ${practica.tutorEmpresarial.usuario.apellido}',
+                      style:
+                          const TextStyle(fontSize: 16, fontFamily: 'Roboto'),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.school,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Tutor Académico:',
+                          style: TextStyle(fontSize: 20, fontFamily: 'Roboto'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      '${practica.tutorInstituto.usuario!.nombre} ${practica.tutorInstituto.usuario!.apellido}',
+                      style:
+                          const TextStyle(fontSize: 16, fontFamily: 'Roboto'),
+                    ),
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                RegistrarActividad(practica: practica),
+                          ),
+                        );
+                      },
+                      child: const Text('Registrar actividades'),
+                    ),
+                  ],
                 ),
               ),
             ),
