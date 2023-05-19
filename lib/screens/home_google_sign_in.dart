@@ -9,6 +9,7 @@ import 'package:proyectoppp/screens/carrusel.dart';
 import 'package:proyectoppp/model/logindata.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proyectoppp/screens/listaconvocatorias.dart';
+import 'package:proyectoppp/screens/listaTutorEspecifico.dart';
 
 import '../sqlite/database.dart';
 import '../utils/url.dart';
@@ -87,12 +88,25 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    listaConvocatoria(usuario: usuario, rol: authorities)),
+                   EstudiantesPostulados(usuario: usuario, rol: authorities)),
           );
         } else if (authorities == 'ROLE_TISTA') {
           print('TUTOR ACADEMICO');
+           Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    EstudiantesPostulados(usuario: usuario, rol: authorities)),
+          );
         } else if (authorities == 'ROLE_RESPP') {
           print('RESPONSABLE DE PRACTICAS PPP');
+          print('Responsable ppp');
+           Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    listaConvocatoria(usuario: usuario, rol: authorities)),
+          );
         }
       } else {
         print('Error: ${response.statusCode}');

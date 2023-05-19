@@ -22,12 +22,10 @@ class TutorEmpresarial {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson()=> {
       'id': id,
       'cargo': cargo,
       'empresa': empresa.toJson(),
       'usuario': usuario.toJson(),
-    };
-  }
+  };
 }
