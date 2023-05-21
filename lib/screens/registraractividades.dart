@@ -84,6 +84,7 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
           actividad: _description,
           practica: widget.practica,
         );
+
         try {
           String requestBody = jsonEncode(semanaActividad);
           print(requestBody);

@@ -13,7 +13,7 @@ import '../model/Usuario.dart';
 import '../screens/DetallePractica.dart';
 import '../screens/Perfil.dart';
 
-String enlace = "http://192.168.1.6:8080/";
+String enlace = "http://192.168.68.110:8080/";
 
 String tokenacceso = '';
 late var cookieacceso;
@@ -23,6 +23,7 @@ TutorInstituto? tutorInstitutoback;
 String ciclo = "";
 String periodo = "";
 String carreraestudiante = "";
+String empresa = "KAMAYTECH";
 
 int calcularTotalHoras(TimeOfDay horaInicio, TimeOfDay horaFin) {
   final int inicioMinutos = horaInicio.hour * 60 + horaInicio.minute;
@@ -130,54 +131,54 @@ Container MenuEstudiante(Usuario usuario, BuildContext context, String rol) {
                     ],
                   ),
                 ),
-                if (rol == 'ROLE_TISTA' ||rol == 'ROLE_TEMP')
-                ListTile(
-                  title: const Text(
-                    'Mis Estudiantes',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontFamily: 'papyrus',
-                      fontSize: 15,
+                if (rol == 'ROLE_TISTA' || rol == 'ROLE_TEMP')
+                  ListTile(
+                    title: const Text(
+                      'Mis Estudiantes',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontFamily: 'papyrus',
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-                  leading: const Icon(
-                    Icons.notifications,
-                    color: Colors.white,
-                  ),
-                  tileColor: Colors.black,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              EstudiantesPostulados(usuario: usuario, rol: rol)),
-                    );
-                  },
-                ),
-                if (rol == 'ROLE_ESTUD' ||rol == 'ROLE_RESPP')
-                ListTile(
-                  title: const Text(
-                    'CONVOCATORIAS',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontFamily: 'papyrus',
-                      fontSize: 15,
+                    leading: const Icon(
+                      Icons.notifications,
+                      color: Colors.white,
                     ),
+                    tileColor: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EstudiantesPostulados(
+                                usuario: usuario, rol: rol)),
+                      );
+                    },
                   ),
-                  leading: const Icon(
-                    Icons.notifications,
-                    color: Colors.white,
+                if (rol == 'ROLE_ESTUD' || rol == 'ROLE_RESPP')
+                  ListTile(
+                    title: const Text(
+                      'CONVOCATORIAS',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontFamily: 'papyrus',
+                        fontSize: 15,
+                      ),
+                    ),
+                    leading: const Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                    ),
+                    tileColor: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                listaConvocatoria(usuario: usuario, rol: rol)),
+                      );
+                    },
                   ),
-                  tileColor: Colors.black,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              listaConvocatoria(usuario: usuario, rol: rol)),
-                    );
-                  },
-                ),
                 if (rol == 'ROLE_ESTUD')
                   ListTile(
                     title: const Text(

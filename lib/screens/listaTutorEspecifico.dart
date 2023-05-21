@@ -5,6 +5,7 @@ import 'package:proyectoppp/model/estudiante.dart';
 import 'package:proyectoppp/model/tutorEmpresarial.dart';
 import 'package:proyectoppp/model/Usuario.dart';
 import 'package:proyectoppp/model/tutorInstituto.dart';
+import 'package:proyectoppp/screens/asistenciascreen.dart';
 import '../utils/url.dart';
 
 class EstudiantesPostulados extends StatefulWidget {
@@ -143,13 +144,15 @@ class _EstudiantesPostuladosState extends State<EstudiantesPostulados> {
         drawer: MenuEstudiante(usuario, context, widget.rol),
         body: ListView.separated(
           itemCount: estudiantes.length,
-          separatorBuilder: (context, index) =>
-              Divider(), 
+          separatorBuilder: (context, index) => Divider(),
           itemBuilder: (context, index) {
             final estudiante = estudiantes[index];
             return ListTile(
               title: Text(
-                estudiante.usuario.nombre.toString() +' ' +estudiante.usuario.apellido.toString(),),
+                estudiante.usuario.nombre.toString() +
+                    ' ' +
+                    estudiante.usuario.apellido.toString(),
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -162,6 +165,14 @@ class _EstudiantesPostuladosState extends State<EstudiantesPostulados> {
                           TextStyle(color: Color.fromARGB(255, 223, 136, 37))),
                 ],
               ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AsistenciaEstudiante(
+                          solicitudEstudiante: estudiante)),
+                );
+              },
             );
           },
         ),

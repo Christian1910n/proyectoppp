@@ -33,4 +33,23 @@ class SemanaActividad {
       'practica': practica.toJson(),
     };
   }
+
+  factory SemanaActividad.fromJson(Map<String, dynamic> json) {
+    return SemanaActividad(
+      id: json['id'],
+      dia: DateTime.parse(json['dia']),
+      horaInicio: _parseTimeOfDay(json['horaInicio']),
+      horaFin: _parseTimeOfDay(json['horaFin']),
+      totalHoras: json['totalHoras'],
+      actividad: json['actividad'],
+      practica: Practica.fromJson(json['practica']),
+    );
+  }
+
+  static TimeOfDay _parseTimeOfDay(String timeString) {
+    final parts = timeString.split(':');
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+    return TimeOfDay(hour: hour, minute: minute);
+  }
 }

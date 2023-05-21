@@ -29,7 +29,7 @@ class _EstudiantesPostuladosScreenState
 
   void obtenerEstudiantesPostulados() async {
     final url = Uri.parse(
-        '${enlace}solicitudEstudiante/listarxconvocatoria?id=${widget.convocatoria.id}');
+        '${enlace}solicitudEstudiante/listarxconvocatoria2?id=${widget.convocatoria.id}');
     final response =
         await http.get(url, headers: {"Authorization": tokenacceso});
 
