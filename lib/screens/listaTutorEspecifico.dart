@@ -113,68 +113,80 @@ class _EstudiantesPostuladosState extends State<EstudiantesPostulados> {
   @override
   Widget build(BuildContext context) {
     if (estudiantes.isEmpty) {
-      return Theme(
-        data: ThemeData(brightness: Brightness.dark),
-        child: Scaffold(
-          appBar: AppBar(),
-          drawer: MenuEstudiante(usuario, context, widget.rol),
-          body: const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Center(
-                child: Text(
-                  'NO HAY ESTUDIANTES POSTULADOS VUELVE PRONTO',
-                  style: TextStyle(fontSize: 18),
-                ),
-              )),
+      return WillPopScope(
+        onWillPop: () async {
+          // Bloquea el botón de retroceso
+          return false;
+        },
+        child: Theme(
+          data: ThemeData(brightness: Brightness.dark),
+          child: Scaffold(
+            appBar: AppBar(),
+            drawer: MenuEstudiante(usuario, context, widget.rol),
+            body: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Center(
+                  child: Text(
+                    'NO HAY ESTUDIANTES POSTULADOS VUELVE PRONTO',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                )),
+          ),
         ),
       );
     }
-    return Theme(
-      data: ThemeData(
-        brightness: Brightness.dark,
-        colorScheme: const ColorScheme.dark(
-          primary: Color(0xFF2196F3),
-          secondary: Color(0xFFFFC107),
+    return WillPopScope(
+      onWillPop: () async {
+        // Bloquea el botón de retroceso
+        return false;
+      },
+      child: Theme(
+        data: ThemeData(
+          brightness: Brightness.dark,
+          colorScheme: const ColorScheme.dark(
+            primary: Color(0xFF2196F3),
+            secondary: Color(0xFFFFC107),
+          ),
         ),
-      ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Lista de estudiantes'),
-        ),
-        drawer: MenuEstudiante(usuario, context, widget.rol),
-        body: ListView.separated(
-          itemCount: estudiantes.length,
-          separatorBuilder: (context, index) => Divider(),
-          itemBuilder: (context, index) {
-            final estudiante = estudiantes[index];
-            return ListTile(
-              title: Text(
-                estudiante.usuario.nombre.toString() +
-                    ' ' +
-                    estudiante.usuario.apellido.toString(),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Carrera: ' + estudiante.carrera.nombre.toString(),
-                    style: TextStyle(color: Color.fromARGB(255, 28, 148, 68)),
-                  ),
-                  Text('Periodo: ' + estudiante.periodo.toString(),
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 223, 136, 37))),
-                ],
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AsistenciaEstudiante(
-                          solicitudEstudiante: estudiante)),
-                );
-              },
-            );
-          },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Lista de estudiantes'),
+          ),
+          drawer: MenuEstudiante(usuario, context, widget.rol),
+          body: ListView.separated(
+            itemCount: estudiantes.length,
+            separatorBuilder: (context, index) => Divider(),
+            itemBuilder: (context, index) {
+              final estudiante = estudiantes[index];
+              return ListTile(
+                title: Text(
+                  estudiante.usuario.nombre.toString() +
+                      ' ' +
+                      estudiante.usuario.apellido.toString(),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Carrera: ' + estudiante.carrera.nombre.toString(),
+                      style: TextStyle(color: Color.fromARGB(255, 28, 148, 68)),
+                    ),
+                    Text('Periodo: ' + estudiante.periodo.toString(),
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 223, 136, 37))),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AsistenciaEstudiante(
+                            solicitudEstudiante: estudiante)),
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );
