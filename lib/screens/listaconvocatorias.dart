@@ -50,17 +50,17 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
         final estudianteJson = response.body;
         estudianteback = Estudiante.fromJson(jsonDecode(estudianteJson));
         print(estudianteJson);
-        if (estudianteback!.ciclo == '5') {
+        if (estudianteback!.ciclo == 5) {
           ciclo = 'del quinto ciclo';
-        } else if (estudianteback!.ciclo == '4') {
+        } else if (estudianteback!.ciclo == 4) {
           ciclo = 'del cuarto ciclo';
-        } else if (estudianteback!.ciclo == '3') {
+        } else if (estudianteback!.ciclo == 3) {
           ciclo = 'del tercer ciclo';
-        } else if (estudianteback!.ciclo == '2') {
+        } else if (estudianteback!.ciclo == 2) {
           ciclo = 'del segundo ciclo';
-        } else if (estudianteback!.ciclo == '1') {
+        } else if (estudianteback!.ciclo == 1) {
           ciclo = 'del primer ciclo';
-        } else if (estudianteback!.ciclo == '0') {
+        } else if (estudianteback!.ciclo == 0) {
           ciclo = 'egresado';
         }
 

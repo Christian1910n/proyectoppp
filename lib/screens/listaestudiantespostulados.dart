@@ -87,7 +87,7 @@ class _EstudiantesPostuladosScreenState
                       Text('Cedula: ' +
                           solicitud.estudiante.usuario.cedula.toString()),
                       Text('Fecha: $fechaInicio'),
-                      Text('Ciclo: ' + estudiante.ciclo),
+                      Text('Ciclo: ' + estudiante.ciclo.toString()),
                     ],
                   ),
                   onTap: () async {
