@@ -12,13 +12,13 @@ class SemanaActividad {
 
   SemanaActividad({
     required this.id,
-    required DateTime dia,
+    required this.dia,
     required this.horaInicio,
     required this.horaFin,
     required this.totalHoras,
     required this.actividad,
     required this.practica,
-  }) : dia = dia.add(Duration(days: 1));
+  });
 
   Map<String, dynamic> toJson() {
     return {
