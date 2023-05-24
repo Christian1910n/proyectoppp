@@ -156,9 +156,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Divider(
-                  height: 180.0,
-                ),
+                const SizedBox( height: 30.0,),
                 SizedBox(
                     child: ClipPath(
                   child: Image.asset(
@@ -167,23 +165,26 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                   ),
                 )),
                 const Text(
-                  'SISTEMA PPP',
+                  '\nSISTEMA PPP',
                   style: TextStyle(
-                      fontFamily: 'cursive',
-                      fontSize: 50.0,
+                      fontFamily: 'Calibri',
+                      fontSize: 45.0,
+                      color: Colors.white),
+                      
+                ),Text(
+                  '(Prácticas pre profesionalesss)\n\n',
+                  style: TextStyle(
+                      fontFamily: 'Calibri',
+                      fontSize: 20.0,
                       color: Colors.white),
                 ),
-                const SizedBox(
-                  width: 160.0,
-                  height: 15.0,
-                  child: Divider(color: Color.fromARGB(255, 255, 255, 255)),
-                ),
+               
                 TextField(
                   enableInteractiveSelection: false,
                   controller: _correo,
                   decoration: InputDecoration(
                       hintText: 'CORREO',
-                      labelText: 'CORREO',
+                      labelText: 'Correo',
                       suffixIcon: const Icon(Icons.verified_user),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0))),
@@ -198,6 +199,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                 const Divider(
                   height: 18.0,
                 ),
+                const SizedBox( height: 30.0,),
                 TextField(
                   enableInteractiveSelection: false,
                   obscureText: !_showPassword,
@@ -244,6 +246,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                     ),
                   ],
                 ),
+                const SizedBox( height: 30.0,),
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
@@ -261,8 +264,8 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                         Icon(Icons.login, size: 30),
                         SizedBox(width: 10),
                         Text(
-                          'INGRESAR',
-                          style: TextStyle(fontFamily: 'cursive', fontSize: 25),
+                          'Ingresar',
+                          style: TextStyle(fontFamily: 'Arial', fontSize: 25),
                         ),
                       ],
                     ),

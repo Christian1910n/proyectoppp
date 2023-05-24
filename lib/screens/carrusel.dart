@@ -19,10 +19,9 @@ class _CarruselState extends State<Carrusel> {
   }
 
   final List<String> images = [
-    'https://www.eluniverso.com/resizer/a7RzV9cpgq3r0Pxpo__CtrcH2Wk=/arc-anglerfish-arc2-prod-eluniverso/public/NUNM6L7XP26ZH2ZX2UUP7C5JIA.jpg',
-    'https://www.semana.com/resizer/fTo3TLRNuIi_JIOiSoLBhqVz1yw=/1920x0/smart/filters:format(jpg):quality(80)/cloudfront-us-east-1.images.arcpublishing.com/semana/HGVAZXW4YNG2FJIETGXXGBVEPE.JPG',
-    'https://pbs.twimg.com/media/E4l_tzxWUAgU1kw.jpg:large',
-    'https://hipocritalector.com/wp-content/uploads/2022/12/cristiano-ronaldo.jpg'
+    'https://firebasestorage.googleapis.com/v0/b/practicas-77c99.appspot.com/o/mision.png?alt=media&token=9232ba2f-579d-47fe-9680-bf5f7f4b0c39',
+    'https://firebasestorage.googleapis.com/v0/b/practicas-77c99.appspot.com/o/vision.png?alt=media&token=ffff1950-73ab-4306-aea1-4df4c5f64444',
+    'https://firebasestorage.googleapis.com/v0/b/practicas-77c99.appspot.com/o/principios.png?alt=media&token=57fffc25-9633-43ac-bafd-c4adae070e3f',
   ];
 
   abrirlogin() {
@@ -72,7 +71,7 @@ class _CarruselState extends State<Carrusel> {
               children: [
                 Expanded(
                   child: Container(
-                    height: 5,
+                    height: 3,
                     color: Colors.white,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                   ),
@@ -80,7 +79,7 @@ class _CarruselState extends State<Carrusel> {
                 const SizedBox(width: 5),
                 Expanded(
                   child: Container(
-                    height: 5,
+                    height: 3,
                     color: Colors.white,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                   ),
@@ -88,21 +87,21 @@ class _CarruselState extends State<Carrusel> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Container(
-                    height: 5,
+                    height: 3,
                     color: Colors.white,
                   ),
                 ),
               ],
             ),
             const Padding(
-              padding: EdgeInsets.all(80.0),
+              padding: EdgeInsets.all(40.0),
               child: Text(
                 "Visita la web para lograr mucho mas",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontFamily: 'papyrus',
-                  fontSize: 35,
+                  fontSize: 30,
                 ),
               ),
             ),
@@ -113,14 +112,14 @@ class _CarruselState extends State<Carrusel> {
                 return Image.network(imageUrl, fit: BoxFit.cover);
               },
               options: CarouselOptions(
-                height: 260,
+                height: 450,
                 autoPlay: true,
                 enlargeCenterPage: true,
-                aspectRatio: 16 / 9,
+                aspectRatio: 4 / 1,
                 autoPlayCurve: Curves.easeInBack,
                 enableInfiniteScroll: true,
                 autoPlayAnimationDuration: const Duration(milliseconds: 1000),
-                viewportFraction: 0.6,
+                viewportFraction: 0.9,
               ),
             ),
             const SizedBox(height: 30),
@@ -128,16 +127,16 @@ class _CarruselState extends State<Carrusel> {
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.all(12.0),
-                textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
+                textStyle: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
                 backgroundColor: const Color.fromARGB(255, 0, 84, 153),
               ),
               onPressed: () => abrirRegistroEstudiantes(context),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.accessibility, size: 18),
+                  Icon(Icons.accessibility, size: 20),
                   SizedBox(width: 5),
-                  Text('REGISTRARSE'),
+                  Text('Registrarse'),
                 ],
               ),
             ),
@@ -145,14 +144,14 @@ class _CarruselState extends State<Carrusel> {
             ElevatedButton(
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
-                textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
+                textStyle: const TextStyle(fontSize: 15, fontFamily: 'Arial'),
                 backgroundColor: const Color.fromARGB(255, 0, 84, 153),
               ),
               onPressed: abrirlogin,
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.login, size: 15),
+                  Icon(Icons.login, size: 18),
                   SizedBox(width: 5),
                   Text('Iniciar Sesión'),
                 ],

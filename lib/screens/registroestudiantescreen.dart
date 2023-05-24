@@ -257,6 +257,13 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
       print(error);
     });
   }
+  abrirlogin() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomeGoogleSignIn()),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +292,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                 const Padding(
                   padding: EdgeInsets.all(40.0),
                   child: Text(
-                    "REGISTRO DE USUARIO",
+                    "\nREGISTRO DE USUARIO",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -501,7 +508,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                     textStyle:
-                        const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
+                        const TextStyle(fontSize: 15, fontFamily: 'arial'),
                     backgroundColor: const Color.fromARGB(255, 0, 84, 153),
                   ),
                   onPressed: () {
@@ -512,10 +519,24 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     children: [
                       Icon(Icons.login, size: 15),
                       SizedBox(width: 5),
-                      Text('REGISTRAR'),
+                      Text('Registrar'),
                     ],
                   ),
                 ),
+                  TextButton(
+                  onPressed: () {
+                    abrirlogin();
+                  },
+                  child: Text(
+                    '¿Ya eres usuario de PPP? Iniciar sesión',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontFamily: 'arial',
+                    ),
+                  ),
+                ),
+
               ],
             ),
           ),
