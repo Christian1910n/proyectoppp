@@ -4,7 +4,7 @@ import 'package:proyectoppp/model/Usuario.dart';
 class Estudiante {
   int id;
   String periodo;
-  String ciclo;
+  int ciclo;
   int horasCumplidas;
   bool prioridad;
   int idEstudiante;

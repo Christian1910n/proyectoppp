@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
@@ -37,106 +39,127 @@ class _CarruselState extends State<Carrusel> {
     );
   }
 
+  DateTime? currentBackPressTime;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 60),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 5,
-                  color: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                ),
-              ),
-              const SizedBox(width: 5),
-              Expanded(
-                child: Container(
-                  height: 5,
-                  color: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Container(
-                  height: 5,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.all(80.0),
-            child: Text(
-              "Visita la web para lograr mucho mas",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'papyrus',
-                fontSize: 35,
-              ),
+    return WillPopScope(
+      onWillPop: () async {
+        // Verificar si se ha presionado el botón de retroceso anteriormente
+        if (currentBackPressTime == null ||
+            DateTime.now().difference(currentBackPressTime!) >
+                Duration(seconds: 2)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Presione otra vez para salir'),
+              duration: Duration(seconds: 3),
             ),
-          ),
-          CarouselSlider.builder(
-            itemCount: images.length,
-            itemBuilder: (BuildContext context, int index, int realIndex) {
-              final imageUrl = images[index];
-              return Image.network(imageUrl, fit: BoxFit.cover);
-            },
-            options: CarouselOptions(
-              height: 260,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              aspectRatio: 16 / 9,
-              autoPlayCurve: Curves.easeInBack,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: const Duration(milliseconds: 1000),
-              viewportFraction: 0.6,
-            ),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
-              backgroundColor: const Color.fromARGB(255, 0, 84, 153),
-            ),
-            onPressed: () => abrirRegistroEstudiantes(context),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          );
+          currentBackPressTime = DateTime.now();
+          return false;
+        }
+        exit(0);
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 60),
+            Row(
               children: [
-                Icon(Icons.accessibility, size: 18),
-                SizedBox(width: 5),
-                Text('REGISTRARSE'),
+                Expanded(
+                  child: Container(
+                    height: 5,
+                    color: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: Container(
+                    height: 5,
+                    color: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Container(
+                    height: 5,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
-              textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
-              backgroundColor: const Color.fromARGB(255, 0, 84, 153),
+            const Padding(
+              padding: EdgeInsets.all(80.0),
+              child: Text(
+                "Visita la web para lograr mucho mas",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'papyrus',
+                  fontSize: 35,
+                ),
+              ),
             ),
-            onPressed: abrirlogin,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.login, size: 15),
-                SizedBox(width: 5),
-                Text('Iniciar Sesión'),
-              ],
+            CarouselSlider.builder(
+              itemCount: images.length,
+              itemBuilder: (BuildContext context, int index, int realIndex) {
+                final imageUrl = images[index];
+                return Image.network(imageUrl, fit: BoxFit.cover);
+              },
+              options: CarouselOptions(
+                height: 260,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 16 / 9,
+                autoPlayCurve: Curves.easeInBack,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 1000),
+                viewportFraction: 0.6,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 30),
+            ElevatedButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.all(12.0),
+                textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
+                backgroundColor: const Color.fromARGB(255, 0, 84, 153),
+              ),
+              onPressed: () => abrirRegistroEstudiantes(context),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.accessibility, size: 18),
+                  SizedBox(width: 5),
+                  Text('REGISTRARSE'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 12, fontFamily: 'papyrus'),
+                backgroundColor: const Color.fromARGB(255, 0, 84, 153),
+              ),
+              onPressed: abrirlogin,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.login, size: 15),
+                  SizedBox(width: 5),
+                  Text('Iniciar Sesión'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

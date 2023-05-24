@@ -39,7 +39,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
   String? contra = '';
   String? rcontra = '';
   int? idcarre = 0;
-  String _cicloValue = '1';
+  int _cicloValue = 1;
 
   List<Carrera> carreras = [];
 
@@ -65,7 +65,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
     _estudiante = Estudiante(
         id: 0,
         periodo: '',
-        ciclo: '',
+        ciclo: 0,
         horasCumplidas: 0,
         prioridad: false,
         idEstudiante: 0,
@@ -98,6 +98,10 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
             dialogoerror("USUARIO YA EXISTE", context);
           } else {}
         } else {
+          String telefonos = usuarioFenix.telefono;
+          List<String> telefonosList = telefonos.split(';');
+          String primerTelefono = telefonosList[0];
+
           setState(() {
             _usuarioFenix = usuarioFenix;
 
@@ -105,7 +109,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
             _capellidos.text = _usuarioFenix.apellidos;
             _cciclo.text = '${_usuarioFenix.ciclo}';
             _ccorreo.text = _usuarioFenix.correo;
-            _ctelefono.text = _usuarioFenix.telefono;
+            _ctelefono.text = primerTelefono;
             _cperiodo.text = _usuarioFenix.periodo;
             idcarre = _usuarioFenix.carreraId;
 
@@ -114,8 +118,8 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
             _estudiante.usuario.correo = _usuarioFenix.correo;
             _estudiante.usuario.cedula = _usuarioFenix.cedula;
             _estudiante.usuario.telefono = _usuarioFenix.telefono;
-            _estudiante.ciclo = _usuarioFenix.ciclo.toString();
-            _cicloValue = _usuarioFenix.ciclo.toString();
+            _estudiante.ciclo = _usuarioFenix.ciclo;
+            _cicloValue = _usuarioFenix.ciclo;
             _estudiante.periodo = _usuarioFenix.periodo;
             _estudiante.idEstudiante = _usuarioFenix.alumno_docenteId;
             _habilitar = false;
@@ -178,7 +182,6 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
             _estudiante.usuario.apellido != '' &&
             _estudiante.usuario.telefono != '' &&
             _estudiante.usuario.correo != '' &&
-            _estudiante.ciclo != '' &&
             _estudiante.periodo != '' &&
             contra != '' &&
             carreraSeleccionada?.nombre != '' &&
@@ -197,29 +200,36 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                 },
                 body: jsonEncode(_estudiante.toJson()),
               );
+              print('holi ${response.statusCode}');
+              if (response.statusCode == 201) {
+                print("hola response ");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Usuario Registrado con Exito'),
+                    duration: Duration(seconds: 3),
+                  ),
+                );
 
-              final responseBody = jsonDecode(response.body);
-              print(responseBody);
-              // ignore: use_build_context_synchronously
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Usuario registrado con éxito'),
-                  duration: Duration(seconds: 3),
-                ),
-              );
+                // ignore: use_build_context_synchronously
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeGoogleSignIn()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Ocurrio un error al registrar su usuario'),
+                    duration: Duration(seconds: 3),
+                  ),
+                );
+              }
             } catch (error) {
-              print(error);
+              print('aqui es $error');
             } finally {
               setState(() {
                 _loading = false;
               });
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomeGoogleSignIn()),
-              );
             }
-
-            print(carreraSeleccionada?.idCarrera);
           }
         } else {
           dialogoerror('DATOS INCOMPLETOS', context);
@@ -341,7 +351,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
-                  enabled: false,
+                  enabled: !_habilitar,
                   onChanged: (value) {
                     setState(() {
                       _estudiante.usuario.correo = value;
@@ -365,39 +375,44 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                   },
                 ),
                 const SizedBox(height: 20),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<int>(
                   dropdownColor: Colors.blue,
                   value: _cicloValue,
                   items: [
                     DropdownMenuItem(
                       child: Text('1', style: TextStyle(color: Colors.white)),
-                      value: '1',
+                      value: 1,
                       enabled: !_habilitar,
                     ),
                     DropdownMenuItem(
                       child: Text('2', style: TextStyle(color: Colors.white)),
-                      value: '2',
+                      value: 2,
                       enabled: !_habilitar,
                     ),
                     DropdownMenuItem(
                       child: Text('3', style: TextStyle(color: Colors.white)),
-                      value: '3',
+                      value: 3,
                       enabled: !_habilitar,
                     ),
                     DropdownMenuItem(
                       child: Text('4', style: TextStyle(color: Colors.white)),
-                      value: '4',
+                      value: 4,
                       enabled: !_habilitar,
                     ),
                     DropdownMenuItem(
                       child: Text('5', style: TextStyle(color: Colors.white)),
-                      value: '5',
+                      value: 5,
+                      enabled: !_habilitar,
+                    ),
+                    DropdownMenuItem(
+                      child: Text('6', style: TextStyle(color: Colors.white)),
+                      value: 6,
                       enabled: !_habilitar,
                     ),
                     DropdownMenuItem(
                       child: Text('Egresado',
                           style: TextStyle(color: Colors.white)),
-                      value: '0',
+                      value: 0,
                       enabled: !_habilitar,
                     ),
                   ],

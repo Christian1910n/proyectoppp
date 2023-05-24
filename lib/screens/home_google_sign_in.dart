@@ -28,12 +28,10 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   final TextEditingController _contra = TextEditingController();
 
   void _cargarcredenciales() async {
-    // Verifica si se han almacenado las credenciales del usuario en la base de datos
     Map? credentials =
         await DatabaseHelper.instance.getCredentials(_correo.text);
 
     if (credentials != null) {
-      // Si se han almacenado las credenciales, completa automáticamente los campos de nombre de usuario y contraseña
       _correo.text = credentials[DatabaseHelper.columnName];
       _contra.text = credentials[DatabaseHelper.columnPassword];
       recordar = true;
@@ -88,11 +86,11 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                   EstudiantesPostulados(usuario: usuario, rol: authorities)),
+                    EstudiantesPostulados(usuario: usuario, rol: authorities)),
           );
         } else if (authorities == 'ROLE_TISTA') {
           print('TUTOR ACADEMICO');
-           Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
@@ -101,7 +99,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
         } else if (authorities == 'ROLE_RESPP') {
           print('RESPONSABLE DE PRACTICAS PPP');
           print('Responsable ppp');
-           Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
@@ -141,127 +139,139 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 4, 13, 17),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 90.0),
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Divider(
-                height: 180.0,
-              ),
-              SizedBox(
-                  child: ClipPath(
-                child: Image.asset(
-                  'assets/logoista.png',
-                  fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Carrusel()),
+        );
+
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: const Color.fromARGB(255, 4, 13, 17),
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 90.0),
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Divider(
+                  height: 180.0,
                 ),
-              )),
-              const Text(
-                'SISTEMA PPP',
-                style: TextStyle(
-                    fontFamily: 'cursive', fontSize: 50.0, color: Colors.white),
-              ),
-              const SizedBox(
-                width: 160.0,
-                height: 15.0,
-                child: Divider(color: Color.fromARGB(255, 255, 255, 255)),
-              ),
-              TextField(
-                enableInteractiveSelection: false,
-                controller: _correo,
-                decoration: InputDecoration(
-                    hintText: 'USUARIO',
-                    labelText: 'USUARIO',
-                    suffixIcon: const Icon(Icons.verified_user),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
-                style: const TextStyle(color: Colors.white),
-                onChanged: (valor) {
-                  _cargarcredenciales();
-                  setState(() {
-                    _loginData.usuario = valor;
-                  });
-                },
-              ),
-              const Divider(
-                height: 18.0,
-              ),
-              TextField(
-                enableInteractiveSelection: false,
-                obscureText: !_showPassword,
-                controller: _contra,
-                decoration: InputDecoration(
-                    hintText: 'Password',
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: _showPassword
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                      onPressed: () {
+                SizedBox(
+                    child: ClipPath(
+                  child: Image.asset(
+                    'assets/logoista.png',
+                    fit: BoxFit.cover,
+                  ),
+                )),
+                const Text(
+                  'SISTEMA PPP',
+                  style: TextStyle(
+                      fontFamily: 'cursive',
+                      fontSize: 50.0,
+                      color: Colors.white),
+                ),
+                const SizedBox(
+                  width: 160.0,
+                  height: 15.0,
+                  child: Divider(color: Color.fromARGB(255, 255, 255, 255)),
+                ),
+                TextField(
+                  enableInteractiveSelection: false,
+                  controller: _correo,
+                  decoration: InputDecoration(
+                      hintText: 'USUARIO',
+                      labelText: 'USUARIO',
+                      suffixIcon: const Icon(Icons.verified_user),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0))),
+                  style: const TextStyle(color: Colors.white),
+                  onChanged: (valor) {
+                    _cargarcredenciales();
+                    setState(() {
+                      _loginData.usuario = valor;
+                    });
+                  },
+                ),
+                const Divider(
+                  height: 18.0,
+                ),
+                TextField(
+                  enableInteractiveSelection: false,
+                  obscureText: !_showPassword,
+                  controller: _contra,
+                  decoration: InputDecoration(
+                      hintText: 'Password',
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: _showPassword
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            _showPassword = !_showPassword;
+                          });
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0))),
+                  style: const TextStyle(color: Colors.white),
+                  onChanged: (valor) {
+                    setState(() {
+                      _loginData.contra = valor;
+                    });
+                  },
+                ),
+                const Divider(
+                  height: 15.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Checkbox(
+                      value: recordar,
+                      onChanged: (value) {
                         setState(() {
-                          _showPassword = !_showPassword;
+                          recordar = value!;
                         });
                       },
                     ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
-                style: const TextStyle(color: Colors.white),
-                onChanged: (valor) {
-                  setState(() {
-                    _loginData.contra = valor;
-                  });
-                },
-              ),
-              const Divider(
-                height: 15.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Checkbox(
-                    value: recordar,
-                    onChanged: (value) {
-                      setState(() {
-                        recordar = value!;
-                      });
+                    const Text(
+                      'Recordar contraseña',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.all(16.0),
+                        textStyle: const TextStyle(fontSize: 20),
+                        backgroundColor: const Color.fromARGB(255, 0, 84, 153)),
+                    onPressed: () {
+                      login();
                     },
-                  ),
-                  const Text(
-                    'Recordar contraseña',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.all(16.0),
-                      textStyle: const TextStyle(fontSize: 20),
-                      backgroundColor: const Color.fromARGB(255, 0, 84, 153)),
-                  onPressed: () {
-                    login();
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.login, size: 30),
-                      SizedBox(width: 10),
-                      Text(
-                        'INGRESAR',
-                        style: TextStyle(fontFamily: 'cursive', fontSize: 25),
-                      ),
-                    ],
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.login, size: 30),
+                        SizedBox(width: 10),
+                        Text(
+                          'INGRESAR',
+                          style: TextStyle(fontFamily: 'cursive', fontSize: 25),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

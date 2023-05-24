@@ -77,14 +77,13 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
         });
         SemanaActividad semanaActividad = SemanaActividad(
           id: 0,
-          dia: _selectedDate,
+          dia: _selectedDate.add(Duration(days: 1)),
           horaInicio: _selectedEntryTime,
           horaFin: _selectedExitTime,
           totalHoras: totalHoras,
           actividad: _description,
           practica: widget.practica,
         );
-
         try {
           String requestBody = jsonEncode(semanaActividad);
           print(requestBody);
