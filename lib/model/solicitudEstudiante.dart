@@ -3,7 +3,7 @@ import 'package:proyectoppp/model/convocatoria.dart';
 
 class SolicitudEstudiante {
   final int id;
-  final int estado;
+  int estado;
   final DateTime fechaEnvio;
   final Estudiante estudiante;
   final Convocatoria convocatoria;
@@ -17,11 +17,10 @@ class SolicitudEstudiante {
 
   factory SolicitudEstudiante.fromJson(Map<String, dynamic> json) {
     return SolicitudEstudiante(
-      id: json['id'],
-      estado: json['estado'], 
-      fechaEnvio: DateTime.parse(json['fechaEnvio']), 
-      estudiante: Estudiante.fromJson(json['estudiante']), 
-      convocatoria: Convocatoria.fromJson(json['convocatoria']));
+        id: json['id'],
+        estado: json['estado'],
+        fechaEnvio: DateTime.parse(json['fechaEnvio']),
+        estudiante: Estudiante.fromJson(json['estudiante']),
+        convocatoria: Convocatoria.fromJson(json['convocatoria']));
   }
-
 }

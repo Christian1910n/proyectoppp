@@ -182,8 +182,8 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                   enableInteractiveSelection: false,
                   controller: _correo,
                   decoration: InputDecoration(
-                      hintText: 'USUARIO',
-                      labelText: 'USUARIO',
+                      hintText: 'CORREO',
+                      labelText: 'CORREO',
                       suffixIcon: const Icon(Icons.verified_user),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0))),

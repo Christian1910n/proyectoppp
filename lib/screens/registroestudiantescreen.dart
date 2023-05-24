@@ -117,7 +117,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
             _estudiante.usuario.apellido = _usuarioFenix.apellidos;
             _estudiante.usuario.correo = _usuarioFenix.correo;
             _estudiante.usuario.cedula = _usuarioFenix.cedula;
-            _estudiante.usuario.telefono = _usuarioFenix.telefono;
+            _estudiante.usuario.telefono = primerTelefono;
             _estudiante.ciclo = _usuarioFenix.ciclo;
             _cicloValue = _usuarioFenix.ciclo;
             _estudiante.periodo = _usuarioFenix.periodo;
@@ -200,7 +200,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                 },
                 body: jsonEncode(_estudiante.toJson()),
               );
-              print('holi ${response.statusCode}');
+              print('holi ${response.body}');
               if (response.statusCode == 201) {
                 print("hola response ");
                 ScaffoldMessenger.of(context).showSnackBar(

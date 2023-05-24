@@ -62,6 +62,8 @@ class _listaConvocatoriaState extends State<listaConvocatoria> {
           ciclo = 'del primer ciclo';
         } else if (estudianteback!.ciclo == 0) {
           ciclo = 'egresado';
+        } else if (estudianteback!.ciclo == 6) {
+          ciclo = 'del sexto ciclo';
         }
 
         periodo = estudianteback!.periodo;
