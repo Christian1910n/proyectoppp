@@ -132,6 +132,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
         }
       } catch (error) {
         print('Error: $error');
+        dialogoerror("NO ESTAS CONECTADO A INTERNET", context);
         if (mounted) {
           setState(() {
             _cnombres.text = '';
@@ -172,9 +173,6 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
   }
 
   Future<void> registrarestudiante() async {
-    print(_estudiante.carrera.id);
-    print(carreraSeleccionada!.id);
-
     if (validatePassword(_estudiante.usuario.password!)) {
       if (contra == rcontra) {
         if (_estudiante.usuario.cedula != '' &&
@@ -257,6 +255,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
       print(error);
     });
   }
+
   abrirlogin() {
     Navigator.push(
       context,
@@ -264,17 +263,16 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     if (_loading) {
       return Center(
         child: Stack(
           children: [
-            Lottie.network(
-                'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),
+            //Lottie.network(
+            //'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),
 
-            //child: Lottie.asset('assets/loading.json'),
+            Lottie.asset('assets/loading.json'),
           ],
         ),
       );
@@ -523,7 +521,7 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     ],
                   ),
                 ),
-                  TextButton(
+                TextButton(
                   onPressed: () {
                     abrirlogin();
                   },
@@ -536,7 +534,6 @@ class _RegistroestudiantesState extends State<Registroestudiantes> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),

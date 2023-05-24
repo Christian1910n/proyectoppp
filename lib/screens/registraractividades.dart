@@ -132,10 +132,7 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
       return Center(
         child: Stack(
           children: [
-            Lottie.network(
-                'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),
-
-            //child: Lottie.asset('assets/loading.json'),
+            Lottie.asset('assets/loading.json'),
           ],
         ),
       );

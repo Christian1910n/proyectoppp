@@ -54,10 +54,11 @@ class _DetallePracticaState extends State<DetallePractica> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: Lottie.network(
-                'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),
+            /* child: Lottie.network(
+                'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),*/
+            child: Lottie.asset('assets/loading.json'),
           );
-        }  else if (snapshot.data == null) {
+        } else if (snapshot.data == null) {
           return Theme(
             data: ThemeData(brightness: Brightness.dark),
             child: Scaffold(

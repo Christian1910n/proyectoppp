@@ -41,13 +41,11 @@ Future<dynamic> dialogoerror(mensaje, BuildContext context) {
       return AlertDialog(
         backgroundColor: Color.fromARGB(255, 0, 0, 0),
         title: const Text('            !!!ERROR!!!',
-            style: TextStyle(color: Colors.red, fontFamily: 'papyrus')),
-        content: Text(mensaje,
-            style: const TextStyle(color: Colors.red, fontFamily: 'papyrus')),
+            style: TextStyle(color: Colors.red)),
+        content: Text(mensaje, style: const TextStyle(color: Colors.red)),
         actions: <Widget>[
           TextButton(
-            child: const Text('CERRAR',
-                style: TextStyle(color: Colors.red, fontFamily: 'papyrus')),
+            child: const Text('CERRAR', style: TextStyle(color: Colors.red)),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -113,8 +111,8 @@ Container MenuEstudiante(Usuario usuario, BuildContext context, String rol) {
                     children: [
                       SizedBox(
                         height: 80.0,
-                        child: Image.network(
-                          'http://dev2020.tecazuay.edu.ec/wp-content/uploads/2022/11/cropped-LOGO-RECTANGULAR_SIN-FONDO.png',
+                        child: Image.asset(
+                          'assets/logoista.png',
                           fit: BoxFit.cover,
                         ),
                       ),

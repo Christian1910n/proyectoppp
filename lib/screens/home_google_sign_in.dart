@@ -113,7 +113,8 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
 
       print(response.body);
     } catch (error) {
-      print(error);
+      print('Error Login $error');
+      dialogoerror("NO ESTAS CONECTADO A INTERNET", context);
     } finally {
       if (mounted) {
         setState(() {
@@ -134,8 +135,7 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
   Widget build(BuildContext context) {
     if (_loading) {
       return Center(
-        child: Lottie.network(
-            'https://assets6.lottiefiles.com/packages/lf20_C67qsN3hAk.json'),
+        child: Lottie.asset('assets/loading.json'),
       );
     }
 
@@ -156,7 +156,9 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox( height: 30.0,),
+                const SizedBox(
+                  height: 30.0,
+                ),
                 SizedBox(
                     child: ClipPath(
                   child: Image.asset(
@@ -170,15 +172,14 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                       fontFamily: 'Calibri',
                       fontSize: 45.0,
                       color: Colors.white),
-                      
-                ),Text(
+                ),
+                Text(
                   '(Prácticas pre profesionalesss)\n\n',
                   style: TextStyle(
                       fontFamily: 'Calibri',
                       fontSize: 20.0,
                       color: Colors.white),
                 ),
-               
                 TextField(
                   enableInteractiveSelection: false,
                   controller: _correo,
@@ -199,7 +200,9 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                 const Divider(
                   height: 18.0,
                 ),
-                const SizedBox( height: 30.0,),
+                const SizedBox(
+                  height: 30.0,
+                ),
                 TextField(
                   enableInteractiveSelection: false,
                   obscureText: !_showPassword,
@@ -246,7 +249,9 @@ class _HomeGoogleSignInState extends State<HomeGoogleSignIn> {
                     ),
                   ],
                 ),
-                const SizedBox( height: 30.0,),
+                const SizedBox(
+                  height: 30.0,
+                ),
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(

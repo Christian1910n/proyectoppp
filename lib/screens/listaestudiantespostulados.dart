@@ -30,26 +30,30 @@ class _EstudiantesPostuladosScreenState
   void obtenerEstudiantesPostulados() async {
     final url = Uri.parse(
         '${enlace}solicitudEstudiante/listarxconvocatoria2?id=${widget.convocatoria.id}');
-    final response =
-        await http.get(url, headers: {"Authorization": tokenacceso});
+    try {
+      final response =
+          await http.get(url, headers: {"Authorization": tokenacceso});
 
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      print(responseData);
-      List<SolicitudEstudiante> listaEstudiantes = [];
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print(responseData);
+        List<SolicitudEstudiante> listaEstudiantes = [];
 
-      for (final estudianteData in responseData) {
-        final estudiante = SolicitudEstudiante.fromJson(estudianteData);
-        listaEstudiantes.add(estudiante);
+        for (final estudianteData in responseData) {
+          final estudiante = SolicitudEstudiante.fromJson(estudianteData);
+          listaEstudiantes.add(estudiante);
+        }
+
+        setState(() {
+          estudiantesPostulados = listaEstudiantes;
+        });
+      } else {
+        print('Error al obtener la lista de estudiantes postulados');
+        print('Código de respuesta: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
       }
-
-      setState(() {
-        estudiantesPostulados = listaEstudiantes;
-      });
-    } else {
-      print('Error al obtener la lista de estudiantes postulados');
-      print('Código de respuesta: ${response.statusCode}');
-      print('Mensaje de error: ${response.body}');
+    } catch (error) {
+      print('ERROR en estudiantes postulados:  $error');
     }
   }
 

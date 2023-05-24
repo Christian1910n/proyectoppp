@@ -44,7 +44,6 @@ class _CarruselState extends State<Carrusel> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // Verificar si se ha presionado el botón de retroceso anteriormente
         if (currentBackPressTime == null ||
             DateTime.now().difference(currentBackPressTime!) >
                 Duration(seconds: 2)) {
