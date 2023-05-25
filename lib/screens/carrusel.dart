@@ -19,9 +19,9 @@ class _CarruselState extends State<Carrusel> {
   }
 
   final List<String> images = [
-    'https://firebasestorage.googleapis.com/v0/b/practicas-77c99.appspot.com/o/mision.png?alt=media&token=9232ba2f-579d-47fe-9680-bf5f7f4b0c39',
-    'https://firebasestorage.googleapis.com/v0/b/practicas-77c99.appspot.com/o/vision.png?alt=media&token=ffff1950-73ab-4306-aea1-4df4c5f64444',
-    'https://firebasestorage.googleapis.com/v0/b/practicas-77c99.appspot.com/o/principios.png?alt=media&token=57fffc25-9633-43ac-bafd-c4adae070e3f',
+    'assets/mision.png',
+    'assets/vision.png',
+    'assets/principios.png'
   ];
 
   abrirlogin() {
@@ -107,8 +107,8 @@ class _CarruselState extends State<Carrusel> {
             CarouselSlider.builder(
               itemCount: images.length,
               itemBuilder: (BuildContext context, int index, int realIndex) {
-                final imageUrl = images[index];
-                return Image.network(imageUrl, fit: BoxFit.cover);
+                final imagePath = images[index];
+                return Image.asset(imagePath, fit: BoxFit.cover);
               },
               options: CarouselOptions(
                 height: 450,
