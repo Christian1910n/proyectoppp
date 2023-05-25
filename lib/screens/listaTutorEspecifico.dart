@@ -44,7 +44,8 @@ class _EstudiantesPostuladosState extends State<EstudiantesPostulados> {
       print(url);
       if (response.statusCode == 200) {
         final estudianteJson = response.body;
-        tutorInstitutoback = TutorInstituto.fromJson(jsonDecode(estudianteJson));
+        tutorInstitutoback =
+            TutorInstituto.fromJson(jsonDecode(estudianteJson));
         fetchEstudiantesPostulados();
       } else {
         print('Error en la solicitud: ${response.statusCode}');

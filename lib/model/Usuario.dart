@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Usuario {
   int? id;
   String? cedula;
@@ -24,8 +26,12 @@ class Usuario {
     return Usuario(
         id: json['id'],
         cedula: (json['cedula']),
-        nombre: (json['nombre']),
-        apellido: (json['apellido']),
+        apellido: utf8
+            .decode(json['apellido'].toString().codeUnits)
+            .replaceAll('?', 'ñ'),
+        nombre: utf8
+            .decode(json['nombre'].toString().codeUnits)
+            .replaceAll('?', 'ñ'),
         correo: (json['correo']),
         titulo: (json['titulo']),
         telefono: (json['telefono']),

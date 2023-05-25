@@ -8,6 +8,7 @@ import 'package:proyectoppp/screens/carrusel.dart';
 import 'package:proyectoppp/screens/listaTutorEspecifico.dart';
 import 'package:proyectoppp/screens/listaconvocatorias.dart';
 import 'package:http/http.dart' as http;
+import 'package:proyectoppp/screens/notificaciones.dart';
 
 import '../model/Usuario.dart';
 import '../screens/DetallePractica.dart';
@@ -130,6 +131,42 @@ Container MenuEstudiante(Usuario usuario, BuildContext context, String rol) {
                     ],
                   ),
                 ),
+                if (rol == 'ROLE_TISTA' ||
+                    rol == 'ROLE_TEMP' ||
+                    rol == 'ROLE_ESTUD')
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                  'Notificaciones',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                content: NotificacionesPage(
+                                    usuario: usuario, rol: rol),
+                                backgroundColor: Colors.black12,
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Cerrar'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Icon(Icons.notifications),
+                      ),
+                    ),
+                  ),
                 if (rol == 'ROLE_TISTA' || rol == 'ROLE_TEMP')
                   ListTile(
                     title: const Text(
