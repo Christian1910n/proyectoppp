@@ -23,9 +23,30 @@ class _NotificacionesPageState extends State<NotificacionesPage> {
   List<Notificacion> notificaciones = [];
   int tutorestudiante = 1;
 
-  Future<void> listanotificaciones() async {
+  Future<void> listanotificacionestutor() async {
     final String url =
         '${enlace}notificacion/listar/${widget.usuario.id}/$tutorestudiante';
+    final response =
+        await http.get(Uri.parse(url), headers: {"Authorization": tokenacceso});
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      final List<Notificacion> notificacionesNuevas =
+          jsonData.map((data) => Notificacion.fromJson(data)).toList();
+
+      setState(() {
+        notificaciones = notificacionesNuevas;
+      });
+
+      print("Notificaciones ${response.body}");
+    } else {
+      print('Error notificaciones: ${response.statusCode}');
+    }
+  }
+
+  Future<void> listanotificacionesestudiante() async {
+    final String url =
+        '${enlace}notificacion/listarestudiante/${widget.usuario.id}';
     final response =
         await http.get(Uri.parse(url), headers: {"Authorization": tokenacceso});
 
@@ -66,12 +87,18 @@ class _NotificacionesPageState extends State<NotificacionesPage> {
   void initState() {
     if (widget.rol == 'ROLE_ESTUD') {
       tutorestudiante = 3;
+      listanotificacionesestudiante();
+      print("ESTUDIANTEEEEEEEEEEEEE");
     } else if (widget.rol == 'ROLE_TISTA') {
       tutorestudiante = 1;
+      listanotificacionestutor();
+      print("TUTOOOOOOOR ACA");
     } else if (widget.rol == 'ROLE_TEMP') {
       tutorestudiante = 2;
+      listanotificacionestutor();
+      print("TUTOOOOOOOR ESPE");
     }
-    listanotificaciones();
+
     super.initState();
   }
 
@@ -88,7 +115,7 @@ class _NotificacionesPageState extends State<NotificacionesPage> {
 
             String mensaje;
             if (tutorestudiante == 3) {
-              if (notificacion.tipo == 1) {
+              if (notificacion.tipo == 3) {
                 mensaje =
                     'Se le ha asignado como tutor académico a "${notificacion.usuarioTutor.nombre} ${notificacion.usuarioTutor.apellido}"';
               } else {
